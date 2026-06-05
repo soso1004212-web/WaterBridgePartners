@@ -688,10 +688,27 @@ section{padding:80px 0;}
 <section>
 <div class="container">
 <div class="stats">
-<div class="stat-box"><h2>500+</h2><p>프로젝트</p></div>
-<div class="stat-box"><h2>120+</h2><p>M&A 자문</p></div>
-<div class="stat-box"><h2>3조+</h2><p>거래규모</p></div>
-<div class="stat-box"><h2>98%</h2><p>고객만족도</p></div>
+
+  <div class="stat-box">
+    <h2 class="count" data-value="500">0</h2>
+    <p>프로젝트</p>
+  </div>
+
+  <div class="stat-box">
+    <h2 class="count" data-value="120">0</h2>
+    <p>M&A 자문</p>
+  </div>
+
+  <div class="stat-box">
+    <h2 class="count" data-value="3">0</h2>
+    <p>조+ 거래규모</p>
+  </div>
+
+  <div class="stat-box">
+    <h2 class="count" data-value="98">0</h2>
+    <p>고객만족도</p>
+  </div>
+
 </div>
 </div>
 </section>
@@ -1047,6 +1064,81 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 상단 버튼
   heroBtn.addEventListener("click", goToContact);
+
+});
+</script>
+
+<script>
+// 기존 코드 (그대로)
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const ctaBtn = document.getElementById("ctaBtn");
+  const heroBtn = document.getElementById("heroCtaBtn");
+  const contactSection = document.getElementById("contact");
+  const form = document.querySelector(".contact-form");
+
+  function goToContact(e){
+    e.preventDefault();
+
+    contactSection.scrollIntoView({ behavior: "smooth" });
+
+    setTimeout(() => {
+      form.classList.add("form-highlight");
+
+      setTimeout(() => {
+        form.classList.remove("form-highlight");
+      }, 1500);
+
+    }, 500);
+
+  }
+
+  ctaBtn.addEventListener("click", goToContact);
+  heroBtn.addEventListener("click", goToContact);
+
+});
+
+
+// ✅ 여기 아래에 "숫자 애니메이션 코드 붙여넣기"
+function animateCount(el, target, suffix = "") {
+  let start = 0;
+  let duration = 1500;
+  let stepTime = 20;
+
+  let increment = target / (duration / stepTime);
+
+  let timer = setInterval(() => {
+    start += increment;
+
+    if (start >= target) {
+      start = target;
+      clearInterval(timer);
+    }
+
+    el.innerText = Math.floor(start) + suffix;
+  }, stepTime);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const counters = document.querySelectorAll(".count");
+
+  counters.forEach((counter) => {
+    let value = parseInt(counter.getAttribute("data-value"));
+
+    let suffix = "";
+
+    if (counter.parentElement.innerText.includes("조")) {
+      suffix = "조+";
+    } else if (counter.innerText.includes("%") || counter.parentElement.innerText.includes("만족")) {
+      suffix = "%";
+    } else {
+      suffix = "+";
+    }
+
+    animateCount(counter, value, suffix);
+  });
 
 });
 </script>
