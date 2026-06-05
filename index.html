@@ -620,21 +620,27 @@ section{padding:80px 0;}
 </div>
 
 <form class="contact-form"
-      action=""https://formspree.io/f/xlgkdzzk"
+      action="https://formspree.io/f/xlgkdzzk"
       method="POST"
-      target="hidden_iframe"
-      onsubmit="submitted=true;">
+      target="hidden_iframe">
 
-  <input type="text" name="company" placeholder="회사명">
-  <input type="text" name="name" placeholder="담당자명">
-  <input type="tel" name="phone" placeholder="연락처">
-  <input type="email" name="email" placeholder="이메일">
-  <textarea name="message" rows="6" placeholder="문의내용"></textarea>
+  <input type="text" name="company" placeholder="회사명" required>
+  <input type="text" name="name" placeholder="담당자명" required>
 
-  <button type="submit">상담 신청</button>
+  <!-- 휴대폰: 숫자만 + 10~11자리 -->
+  <input type="tel" name="phone"
+         placeholder="연락처 (숫자만 입력)"
+         required
+         pattern="[0-9]{10,11}"
+         title="숫자만 입력하세요 (10~11자리)">
+
+<input type="email" name="email" placeholder="이메일" required id="emailInput">
+  <textarea name="message" rows="6" placeholder="문의내용" required></textarea>
+
+  <button type="submit" id="submitBtn" disabled>상담 신청</button>
 </form>
 
-<!-- 숨김 iframe (페이지 이동 방지용) -->
+<!-- 숨김 iframe -->
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 
 <!-- 완료 메시지 -->
@@ -646,11 +652,43 @@ section{padding:80px 0;}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector(".contact-form");
+  const inputs = form.querySelectorAll("input, textarea");
+  const submitBtn = document.getElementById("submitBtn");
+  const phoneInput = form.querySelector('input[name="phone"]');
+const emailInput = document.getElementById("emailInput");
 
+// 이메일 한글 차단
+emailInput.addEventListener("input", function () {
+  this.value = this.value.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣\s]/g, "");
+});
+  // 입력 체크 → 버튼 활성화
+  function checkForm() {
+    let allFilled = true;
+
+    inputs.forEach(input => {
+      if (!input.value.trim()) {
+        allFilled = false;
+      }
+    });
+
+    submitBtn.disabled = !allFilled;
+  }
+
+  inputs.forEach(input => {
+    input.addEventListener("input", checkForm);
+  });
+
+  // 휴대폰 숫자만 허용
+  phoneInput.addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+  });
+
+  // 제출 후 메시지
   form.addEventListener("submit", function () {
     setTimeout(() => {
       document.getElementById("successMsg").style.display = "block";
       form.reset();
+      submitBtn.disabled = true;
     }, 500);
   });
 });
