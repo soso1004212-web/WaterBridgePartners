@@ -1,3 +1,593 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>워터브릿지파트너스</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
+body{
+font-family:'Pretendard',sans-serif;
+background:#0b1220;
+color:#fff;
+overflow-x:hidden;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+.container{
+width:90%;
+max-width:1400px;
+margin:auto;
+}
+
+section{
+padding:120px 0;
+}
+
+header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:999;
+background:rgba(11,18,32,.92);
+backdrop-filter:blur(10px);
+}
+
+.nav{
+height:90px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:32px;
+font-weight:800;
+color:#d4af37;
+}
+
+.menu{
+display:flex;
+gap:40px;
+}
+
+.menu a{
+font-size:15px;
+font-weight:600;
+}
+
+.hero{
+height:100vh;
+
+background:
+linear-gradient(
+rgba(0,0,0,.6),
+rgba(0,0,0,.6)
+),
+url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000');
+
+background-size:cover;
+background-position:center;
+
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+.hero h1{
+font-size:90px;
+font-weight:800;
+line-height:1.1;
+margin-bottom:30px;
+}
+
+.hero p{
+font-size:24px;
+color:#ddd;
+line-height:1.8;
+margin-bottom:40px;
+}
+
+.btn{
+display:inline-block;
+padding:18px 45px;
+background:#d4af37;
+color:#111;
+font-weight:700;
+border-radius:4px;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:25px;
+margin-top:80px;
+}
+
+.stat-box{
+background:#111a2c;
+padding:40px;
+text-align:center;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.stat-box h2{
+font-size:42px;
+color:#d4af37;
+margin-bottom:10px;
+}
+
+.title{
+font-size:56px;
+font-weight:800;
+margin-bottom:30px;
+text-align:center;
+}
+
+.sub{
+text-align:center;
+color:#aaa;
+margin-bottom:70px;
+}
+
+/* ABOUT */
+.about-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.about-card{
+background:#111a2c;
+padding:40px;
+border:1px solid rgba(255,255,255,.08);
+transition:.4s;
+}
+
+.about-card:hover{
+transform:translateY(-10px);
+border-color:#d4af37;
+}
+
+.about-card h3{
+margin-bottom:20px;
+font-size:24px;
+color:#d4af37;
+}
+
+.about-card p{
+line-height:1.8;
+color:#cfcfcf;
+}
+
+/* SERVICE */
+.service-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.service-card{
+background:#111a2c;
+padding:45px;
+text-align:center;
+border:1px solid rgba(255,255,255,.08);
+transition:.4s;
+}
+
+.service-card:hover{
+transform:translateY(-10px);
+border-color:#d4af37;
+}
+
+.service-card h3{
+font-size:24px;
+margin-bottom:20px;
+color:#d4af37;
+}
+
+.service-card p{
+line-height:1.8;
+color:#d0d0d0;
+}
+
+/* TEAM */
+.team-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.team-card{
+background:#111a2c;
+text-align:center;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.team-card img{
+width:100%;
+height:320px;
+object-fit:cover;
+}
+
+.team-card h3{
+margin-top:25px;
+font-size:24px;
+}
+
+.team-card span{
+display:block;
+margin:10px 0;
+color:#d4af37;
+}
+
+.team-card p{
+padding:0 20px 30px;
+color:#ccc;
+}
+
+/* CASE */
+.case-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:25px;
+}
+
+.case-card{
+background:#111a2c;
+padding:50px 30px;
+text-align:center;
+border:1px solid rgba(255,255,255,.08);
+transition:.4s;
+}
+
+.case-card:hover{
+transform:translateY(-10px);
+border-color:#d4af37;
+}
+
+.case-card h3{
+margin-bottom:15px;
+color:#d4af37;
+}
+
+.case-card p{
+color:#d0d0d0;
+}
+
+/* NEWS */
+.news-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.news-card{
+background:#111a2c;
+padding:35px;
+border:1px solid rgba(255,255,255,.08);
+transition:.4s;
+}
+
+.news-card:hover{
+transform:translateY(-10px);
+border-color:#d4af37;
+}
+
+.news-card span{
+color:#d4af37;
+font-size:14px;
+}
+
+.news-card h3{
+margin:15px 0;
+font-size:24px;
+}
+
+.news-card p{
+color:#cfcfcf;
+line-height:1.7;
+}
+
+/* CONTACT */
+.contact-wrap{
+display:grid;
+grid-template-columns:1fr 1.5fr;
+gap:50px;
+}
+
+.contact-info{
+background:#111a2c;
+padding:40px;
+}
+
+.contact-info h3{
+font-size:28px;
+margin-bottom:30px;
+color:#d4af37;
+}
+
+.contact-info p{
+margin-bottom:15px;
+color:#ccc;
+}
+
+.contact-form{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.contact-form input,
+.contact-form textarea{
+padding:18px;
+background:#111a2c;
+border:1px solid rgba(255,255,255,.1);
+color:white;
+}
+
+.contact-form button{
+padding:18px;
+background:#d4af37;
+border:none;
+font-weight:700;
+cursor:pointer;
+}
+
+/* MAP */
+.map-box{
+overflow:hidden;
+border-radius:10px;
+}
+
+/* FOOTER */
+footer{
+background:#060b15;
+padding:80px 0 40px;
+}
+
+.footer-top{
+display:grid;
+grid-template-columns:2fr 1fr 1fr;
+gap:50px;
+margin-bottom:40px;
+}
+
+.footer-top h3{
+font-size:28px;
+margin-bottom:20px;
+color:#d4af37;
+}
+
+.footer-top h4{
+margin-bottom:15px;
+color:#d4af37;
+}
+
+.footer-top p{
+color:#aaa;
+margin-bottom:10px;
+}
+
+footer hr{
+border:none;
+height:1px;
+background:rgba(255,255,255,.1);
+margin:30px 0;
+}
+
+.copyright{
+text-align:center;
+color:#777;
+}
+
+/* MOBILE */
+@media(max-width:991px){
+
+.hero h1{font-size:50px;}
+.title{font-size:40px;}
+
+.stats,
+.about-grid,
+.service-grid,
+.team-grid,
+.case-grid,
+.news-grid,
+.footer-top,
+.contact-wrap{
+grid-template-columns:1fr;
+}
+
+.menu{display:none;}
+
+section{padding:80px 0;}
+
+}
+
+/* SCROLL EFFECT */
+  /* CONTACT FORM 위치 조정 */
+.contact-wrap {
+  align-items: flex-start;
+}
+
+.contact-form {
+  margin-top: 30px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<div class="container nav">
+<div class="logo">WATERBRIDGE</div>
+<div class="menu">
+<a href="#about">회사소개</a>
+<a href="#service">서비스</a>
+<a href="#team">전문인력</a>
+<a href="#case">성공사례</a>
+<a href="#news">뉴스룸</a>
+<a href="#contact">문의</a>
+</div>
+</div>
+</header>
+
+<section class="hero">
+<div>
+<h1>자산의 가치를 높이고<br>미래를 설계합니다</h1>
+<p>M&A · 투자유치 · 기업가치평가 전문<br>워터브릿지파트너스</p>
+<a href="#contact" class="btn">상담 문의</a>
+</div>
+</section>
+
+<section>
+<div class="container">
+<div class="stats">
+<div class="stat-box"><h2>500+</h2><p>프로젝트</p></div>
+<div class="stat-box"><h2>120+</h2><p>M&A 자문</p></div>
+<div class="stat-box"><h2>3조+</h2><p>거래규모</p></div>
+<div class="stat-box"><h2>98%</h2><p>고객만족도</p></div>
+</div>
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+<div class="container">
+<h2 class="title">About WaterBridge</h2>
+<p class="sub">워터브릿지파트너스는 신뢰와 전문성을 바탕으로 자산의 미래 가치를 설계합니다</p>
+
+<div class="about-grid">
+<div class="about-card">
+<h3>기업금융 전문성</h3>
+<p>중소·중견기업의 자금조달, 투자유치, 기업가치 향상을 위한 전략적 금융 솔루션을 제공합니다.</p>
+</div>
+
+<div class="about-card">
+<h3>M&A 자문</h3>
+<p>인수합병, 매각, 기업승계, PMI까지 전 과정을 지원합니다.</p>
+</div>
+
+<div class="about-card">
+<h3>투자 네트워크</h3>
+<p>국내외 투자기관 및 전략적 투자자와의 네트워크를 기반으로 최적의 기회를 제공합니다.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SERVICE -->
+<section id="service">
+<div class="container">
+<h2 class="title">Our Services</h2>
+<p class="sub">기업 성장 단계별 맞춤형 금융 서비스를 제공합니다.</p>
+
+<div class="service-grid">
+<div class="service-card"><h3>M&A Advisory</h3><p>기업 인수·합병, 매각 자문, 거래구조 설계</p></div>
+<div class="service-card"><h3>Valuation</h3><p>기업가치평가, 주식가치평가, 재무실사</p></div>
+<div class="service-card"><h3>Fund Raising</h3><p>투자유치, IR 전략, 투자자 연결</p></div>
+<div class="service-card"><h3>Corporate Finance</h3><p>기업금융, 정책자금, 구조조정</p></div>
+<div class="service-card"><h3>Succession</h3><p>가업승계, 지분정리, Exit 전략</p></div>
+<div class="service-card"><h3>PMI</h3><p>인수 후 통합관리, 조직 재편, 시너지 창출</p></div>
+</div>
+</div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+<div class="container">
+<h2 class="title">Professional Team</h2>
+<p class="sub">금융·M&A 전문가 그룹</p>
+
+<div class="team-grid">
+<div class="team-card">
+<img src="images/team1.jpg">
+<h3>김철주 대표</h3>
+<span>CEO</span>
+<p>대표 소개</p>
+</div>
+
+<div class="team-card">
+<img src="images/team2.jpg">
+<h3>김투자 부대표</h3>
+<span>Managing Director</span>
+<p>M&A 자문 전문가</p>
+</div>
+
+<div class="team-card">
+<img src="images/team3.jpg">
+<h3>이금융 이사</h3>
+<span>Director</span>
+<p>기업가치평가 전문가</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CASE -->
+<section id="case">
+<div class="container">
+<h2 class="title">Success Stories</h2>
+<p class="sub">주요 자문 실적</p>
+
+<div class="case-grid">
+<div class="case-card"><h3>제조업 M&A</h3><p>500억 원</p></div>
+<div class="case-card"><h3>IT 투자유치</h3><p>120억 원</p></div>
+<div class="case-card"><h3>기업승계</h3><p>지분정리</p></div>
+<div class="case-card"><h3>기업가치평가</h3><p>상장 준비</p></div>
+</div>
+</div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+<div class="container">
+<h2 class="title">Newsroom</h2>
+<p class="sub">워터브릿지파트너스의 최신 소식</p>
+
+<div class="news-grid">
+<div class="news-card">
+<span>2026.06.05</span>
+<h3>중소기업 투자유치 컨설팅 확대</h3>
+<p>성장기업 대상 투자유치 프로그램 운영</p>
+</div>
+
+<div class="news-card">
+<span>2026.05.28</span>
+<h3>M&A 전략 세미나 개최</h3>
+<p>기업가치를 높이는 실전 M&A 전략</p>
+</div>
+
+<div class="news-card">
+<span>2026.05.12</span>
+<h3>기업금융 서비스 런칭</h3>
+<p>정책자금 및 기업대출 컨설팅 제공</p>
+</div>
+</div>
+</div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
 <div class="container">
@@ -5,8 +595,6 @@
 <p class="sub">전문 컨설턴트가 상담해드립니다.</p>
 
 <div class="contact-wrap">
-
-<!-- LEFT -->
 <div class="contact-info">
   <h3>기업가치를 설계하는<br>M&A·투자 자문 파트너</h3>
 
@@ -31,92 +619,93 @@
   </p>
 </div>
 
-<!-- RIGHT FORM -->
 <form class="contact-form"
-      action="https://formspree.io/f/xlgkdzzk"
+      action=""https://formspree.io/f/xlgkdzzk"
       method="POST"
-      target="hidden_iframe">
+      target="hidden_iframe"
+      onsubmit="submitted=true;">
 
   <input type="text" name="company" placeholder="회사명">
   <input type="text" name="name" placeholder="담당자명">
-
-  <!-- PHONE -->
-  <input type="tel" name="phone" id="phone" placeholder="휴대폰 번호 (010-1234-5678)">
-  <p id="phoneError" style="color:#ff4d4d; font-size:13px; display:none;">
-    휴대폰 번호 형식이 올바르지 않습니다.
-  </p>
-
+  <input type="tel" name="phone" placeholder="연락처">
   <input type="email" name="email" placeholder="이메일">
   <textarea name="message" rows="6" placeholder="문의내용"></textarea>
 
   <button type="submit">상담 신청</button>
 </form>
 
-<!-- hidden iframe -->
+<!-- 숨김 iframe (페이지 이동 방지용) -->
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 
-<!-- success -->
+<!-- 완료 메시지 -->
 <div id="successMsg"
      style="display:none; margin-top:20px; text-align:center; color:#d4af37; font-weight:600;">
   ✔ 상담 신청이 정상적으로 접수되었습니다. 빠르게 연락드리겠습니다.
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector(".contact-form");
+
+  form.addEventListener("submit", function () {
+    setTimeout(() => {
+      document.getElementById("successMsg").style.display = "block";
+      form.reset();
+    }, 500);
+  });
+});
+</script>
+</div>
 </div>
 </div>
 </section>
 
-<!-- ✅ FINANCE LEVEL VALIDATION SCRIPT -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+<!-- MAP -->
+<section>
+<div class="container">
+<h2 class="title">Location</h2>
+<p class="sub">찾아오시는 길</p>
 
-  const form = document.querySelector(".contact-form");
-  const phone = document.getElementById("phone");
-  const phoneError = document.getElementById("phoneError");
-  const successMsg = document.getElementById("successMsg");
+<div class="map-box">
+<iframe
+src="https://maps.google.com/maps?q=yeouido&t=&z=13&ie=UTF8&iwloc=&output=embed"
+width="100%"
+height="500"
+style="border:0;">
+</iframe>
+</div>
+</div>
+</section>
 
-  function validatePhone(value) {
-    return /^01[0-9]-\d{3,4}-\d{4}$/.test(value);
-  }
+<!-- FOOTER -->
+<footer>
+<div class="container">
+<div class="footer-top">
+<div>
+<h3>WaterBridge Partners</h3>
+<p>가치를 연결하고 성장을 완성합니다.</p>
+</div>
 
-  // 실시간 검증
-  phone.addEventListener("input", function () {
-    if (phone.value === "" || validatePhone(phone.value)) {
-      phone.style.border = "";
-      phoneError.style.display = "none";
-    }
-  });
+<div>
+<h4>Service</h4>
+<p>M&A Advisory</p>
+<p>Valuation</p>
+<p>Fund Raising</p>
+</div>
 
-  form.addEventListener("submit", function (e) {
-    const value = phone.value.trim();
+<div>
+<h4>Contact</h4>
+<p>info@waterbridgepartners.co.kr</p>
+</div>
+</div>
 
-    // 1. 비어있음
-    if (!value) {
-      e.preventDefault();
-      phone.style.border = "1px solid #ff4d4d";
-      phoneError.textContent = "휴대폰 번호를 입력해주세요.";
-      phoneError.style.display = "block";
-      phone.focus();
-      return;
-    }
+<hr>
 
-    // 2. 형식 오류
-    if (!validatePhone(value)) {
-      e.preventDefault();
-      phone.style.border = "1px solid #ff4d4d";
-      phoneError.textContent = "010-1234-5678 형식으로 입력해주세요.";
-      phoneError.style.display = "block";
-      phone.focus();
-      return;
-    }
+<p class="copyright">
+© 2026 WaterBridge Partners. All Rights Reserved.
+</p>
+</div>
+</footer>
 
-    // 성공 처리
-    setTimeout(() => {
-      successMsg.style.display = "block";
-      form.reset();
-      phoneError.style.display = "none";
-      phone.style.border = "";
-    }, 500);
-  });
-
-});
-</script>
+</body>
+</html>
