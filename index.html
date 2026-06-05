@@ -593,13 +593,42 @@ section{padding:80px 0;}
 <p>서울특별시 영등포구 국제금융로 10</p>
 </div>
 
-<form class="contact-form" action="https://formspree.io/f/xlgkdzzk" method="POST">
-<input type="text" name="company" placeholder="회사명">
-<input type="text" name="name" placeholder="담당자명">
-<input type="tel" name="phone" placeholder="연락처">
-<input type="email" name="email" placeholder="이메일">
-<textarea name="message" rows="6" placeholder="문의내용"></textarea>
-<button type="submit">상담 신청</button>
+<form class="contact-form"
+      action=""https://formspree.io/f/xlgkdzzk"
+      method="POST"
+      target="hidden_iframe"
+      onsubmit="submitted=true;">
+
+  <input type="text" name="company" placeholder="회사명">
+  <input type="text" name="name" placeholder="담당자명">
+  <input type="tel" name="phone" placeholder="연락처">
+  <input type="email" name="email" placeholder="이메일">
+  <textarea name="message" rows="6" placeholder="문의내용"></textarea>
+
+  <button type="submit">상담 신청</button>
+</form>
+
+<!-- 숨김 iframe (페이지 이동 방지용) -->
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
+<!-- 완료 메시지 -->
+<div id="successMsg"
+     style="display:none; margin-top:20px; text-align:center; color:#d4af37; font-weight:600;">
+  ✔ 상담 신청이 정상적으로 접수되었습니다. 빠르게 연락드리겠습니다.
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector(".contact-form");
+
+  form.addEventListener("submit", function () {
+    setTimeout(() => {
+      document.getElementById("successMsg").style.display = "block";
+      form.reset();
+    }, 500);
+  });
+});
+</script>
 </div>
 </div>
 </div>
