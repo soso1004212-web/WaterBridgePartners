@@ -12,6 +12,33 @@
 
 <style>
 
+.btn{
+  transition: all 0.3s ease;
+}
+
+/* 마우스 hover 효과 */
+.btn:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(212,175,55,0.4);
+  background: #e0b94f;
+}
+
+/* 클릭 효과 */
+.btn:active{
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(212,175,55,0.3);
+}
+
+.about-card h3{
+  text-align:center;
+}
+
+.about-card p{
+  text-align:center;
+}
+.about-card{
+  text-align: center;
+}
 
 .logo{
 display:flex;
@@ -701,7 +728,7 @@ section{padding:80px 0;}
 
   <div class="stat-box">
     <h2 class="count" data-value="3">0</h2>
-    <p>조+ 거래규모</p>
+    <p>거래규모</p>
   </div>
 
   <div class="stat-box">
