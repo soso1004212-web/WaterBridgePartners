@@ -4,40 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>M&A 자문 · 기업가치평가 · 투자유치 | 워터브릿지파트너스</title>
-
-<meta name="description" content="M&A, 기업가치평가, 투자유치 전문 금융 자문사">
-<meta name="keywords" content="M&A, 기업가치평가, 투자유치, 기업금융, PMI">
-<meta name="author" content="WaterBridge Partners">
+<title>WaterBridge Partners | M&A Advisory & Corporate Finance</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
+/* ===== BASE ===== */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
 font-family:'Pretendard',sans-serif;
-background:#0b1220;
-color:#fff;
+background:#070b14;
+color:#eaeaea;
+line-height:1.6;
 overflow-x:hidden;
 }
 
 a{text-decoration:none;color:inherit}
 
-/* CONTAINER */
+/* ===== LAYOUT ===== */
 .container{
 width:90%;
 max-width:1200px;
 margin:auto;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 header{
 position:fixed;
 top:0;
-left:0;
 width:100%;
-background:rgba(11,18,32,.95);
-backdrop-filter:blur(10px);
+background:rgba(7,11,20,.85);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(255,255,255,.05);
 z-index:999;
 }
 
@@ -45,173 +44,184 @@ z-index:999;
 display:flex;
 justify-content:space-between;
 align-items:center;
-height:80px;
+height:85px;
 }
 
 .logo{
-font-size:24px;
-font-weight:800;
-color:#d4af37;
-}
-
-/* MENU */
-.menu{
-display:flex;
-gap:20px;
+font-size:20px;
+letter-spacing:2px;
+font-weight:700;
+color:#c8a85a;
 }
 
 .menu a{
-color:#ddd;
-font-size:14px;
+margin-left:25px;
+font-size:13px;
+color:#aaa;
+transition:.3s;
 }
 
-/* HAMBURGER */
-.hamburger{
-display:none;
-font-size:26px;
-cursor:pointer;
-color:#fff;
-}
+.menu a:hover{color:#c8a85a}
 
-/* HERO */
+/* ===== HERO ===== */
 .hero{
 height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
 text-align:center;
-background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000');
+padding:0 20px;
+background:
+linear-gradient(180deg, rgba(7,11,20,.6), rgba(7,11,20,1)),
+url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=2000');
 background-size:cover;
 background-position:center;
-padding:0 20px;
 }
 
 .hero h1{
-font-size:64px;
-font-weight:800;
-line-height:1.2;
+font-size:56px;
+font-weight:700;
+letter-spacing:-1px;
 }
 
 .hero p{
 margin-top:20px;
-color:#ddd;
+color:#b8b8b8;
+font-size:16px;
 }
 
 .btn{
 display:inline-block;
-margin-top:25px;
-padding:14px 35px;
-background:#d4af37;
+margin-top:30px;
+padding:14px 34px;
+background:#c8a85a;
 color:#111;
-font-weight:700;
-border-radius:4px;
+font-weight:600;
+letter-spacing:1px;
+font-size:13px;
+transition:.3s;
 }
 
-/* SECTION */
+.btn:hover{
+background:#e2c67a;
+}
+
+/* ===== SECTION STYLE ===== */
 section{
-padding:100px 0;
+padding:110px 0;
+border-top:1px solid rgba(255,255,255,.05);
 }
 
 .title{
+font-size:34px;
+font-weight:600;
 text-align:center;
-font-size:38px;
 margin-bottom:10px;
+letter-spacing:-0.5px;
 }
 
 .sub{
 text-align:center;
-color:#aaa;
-margin-bottom:50px;
+color:#888;
+font-size:14px;
+margin-bottom:60px;
 }
 
-/* GRID */
+/* ===== GRID ===== */
 .grid-3{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:20px;
+gap:25px;
 }
 
 .card{
-background:#111a2c;
+background:rgba(255,255,255,.02);
+border:1px solid rgba(255,255,255,.06);
 padding:30px;
-border:1px solid rgba(255,255,255,.08);
-transition:.3s;
+transition:.4s;
 }
 
 .card:hover{
 transform:translateY(-6px);
-border-color:#d4af37;
+border-color:#c8a85a;
 }
 
 .card h3{
-color:#d4af37;
+color:#c8a85a;
+font-size:15px;
 margin-bottom:10px;
+letter-spacing:0.5px;
 }
 
-/* STATS */
+.card p{
+color:#aaa;
+font-size:13px;
+}
+
+/* ===== STATS ===== */
 .stats{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:15px;
+gap:20px;
 }
 
 .stat{
-background:#111a2c;
-padding:25px;
 text-align:center;
+padding:25px;
+border:1px solid rgba(255,255,255,.06);
+background:rgba(255,255,255,.02);
 }
 
-/* CONTACT */
+.stat h2{
+color:#c8a85a;
+font-size:32px;
+font-weight:700;
+}
+
+.stat p{
+color:#888;
+font-size:12px;
+}
+
+/* ===== CONTACT ===== */
 .contact{
 display:grid;
-grid-template-columns:1fr 1fr;
-gap:30px;
+grid-template-columns:1fr 1.2fr;
+gap:40px;
 }
 
 input,textarea{
 width:100%;
-padding:12px;
-margin-bottom:10px;
-background:#111a2c;
-border:1px solid rgba(255,255,255,.1);
+padding:14px;
+margin-bottom:12px;
+background:rgba(255,255,255,.03);
+border:1px solid rgba(255,255,255,.08);
 color:#fff;
+font-size:13px;
 }
 
 button{
 width:100%;
 padding:14px;
-background:#d4af37;
+background:#c8a85a;
 border:none;
-font-weight:700;
+font-weight:600;
 cursor:pointer;
 }
 
-/* FOOTER */
+/* ===== FOOTER ===== */
 footer{
-padding:50px;
+padding:60px 0;
 text-align:center;
-color:#777;
-background:#060b15;
+color:#666;
+font-size:12px;
+border-top:1px solid rgba(255,255,255,.05);
 }
 
-/* STICKY CTA */
-.sticky-cta{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#d4af37;
-color:#111;
-padding:14px 18px;
-font-weight:700;
-border-radius:50px;
-z-index:999;
-}
-
-/* MOBILE */
+/* ===== MOBILE ===== */
 @media(max-width:900px){
 
-.hero h1{font-size:36px}
+.hero h1{font-size:34px}
 
 .grid-3{grid-template-columns:1fr}
 
@@ -219,27 +229,9 @@ z-index:999;
 
 .contact{grid-template-columns:1fr}
 
-/* menu */
-.menu{
-display:none;
-flex-direction:column;
-position:absolute;
-top:80px;
-right:0;
-background:#0b1220;
-width:200px;
-padding:20px;
-border-left:1px solid #333;
+.menu{display:none}
 }
 
-.menu.active{
-display:flex;
-}
-
-.hamburger{
-display:block;
-}
-}
 </style>
 </head>
 
@@ -247,112 +239,117 @@ display:block;
 
 <header>
 <div class="container nav">
-<div class="logo">WATERBRIDGE</div>
+<div class="logo">WATERBRIDGE PARTNERS</div>
 
-<div class="hamburger" onclick="toggleMenu()">☰</div>
-
-<div class="menu" id="menu">
-<a href="#about">About</a>
-<a href="#service">Service</a>
-<a href="#case">Case</a>
-<a href="#contact">Contact</a>
+<div class="menu">
+<a href="#about">ABOUT</a>
+<a href="#service">SERVICES</a>
+<a href="#case">CASE</a>
+<a href="#contact">CONTACT</a>
 </div>
-
 </div>
 </header>
 
 <section class="hero">
 <div>
-<h1>M&A 기반 기업가치<br>성장 전략</h1>
-<p>M&A · 투자유치 · 기업가치평가 전문 파트너</p>
-<a class="btn" href="#contact">상담 문의</a>
+<h1>M&A Advisory<br>Corporate Value Creation</h1>
+<p>Strategic Financial Advisory for M&A · Valuation · Investment</p>
+<a class="btn" href="#contact">REQUEST CONSULTATION</a>
 </div>
 </section>
 
 <section>
 <div class="container stats">
-<div class="stat"><h2>500+</h2><p>Deals</p></div>
-<div class="stat"><h2>120+</h2><p>M&A</p></div>
-<div class="stat"><h2>3T+</h2><p>Value</p></div>
-<div class="stat"><h2>98%</h2><p>Satisfaction</p></div>
+<div class="stat"><h2>500+</h2><p>Transactions</p></div>
+<div class="stat"><h2>120+</h2><p>M&A Deals</p></div>
+<div class="stat"><h2>$3T+</h2><p>Value Advised</p></div>
+<div class="stat"><h2>98%</h2><p>Client Trust</p></div>
 </div>
 </section>
 
 <section id="about">
 <div class="container">
 <h2 class="title">About Us</h2>
-<p class="sub">기업 가치 극대화 전략 파트너</p>
+<p class="sub">Independent M&A and Corporate Finance Advisory</p>
 
 <div class="grid-3">
-<div class="card"><h3>M&A Advisory</h3><p>딜 구조 설계</p></div>
-<div class="card"><h3>Valuation</h3><p>기업가치평가</p></div>
-<div class="card"><h3>Investment</h3><p>투자유치 전략</p></div>
+<div class="card">
+<h3>M&A Advisory</h3>
+<p>Buy-side / Sell-side advisory and deal execution</p>
 </div>
+
+<div class="card">
+<h3>Valuation</h3>
+<p>Equity valuation and financial modeling</p>
+</div>
+
+<div class="card">
+<h3>Investment Strategy</h3>
+<p>Capital raising and investor relations</p>
+</div>
+</div>
+
 </div>
 </section>
 
 <section id="service">
 <div class="container">
 <h2 class="title">Services</h2>
-<p class="sub">M&A 중심 자문 서비스</p>
+<p class="sub">End-to-End Corporate Finance Solutions</p>
 
 <div class="grid-3">
-<div class="card"><h3>Buy-side</h3><p>인수 전략</p></div>
-<div class="card"><h3>Sell-side</h3><p>매각 자문</p></div>
-<div class="card"><h3>PMI</h3><p>통합 전략</p></div>
+<div class="card"><h3>Buy-side M&A</h3><p>Acquisition strategy & sourcing</p></div>
+<div class="card"><h3>Sell-side M&A</h3><p>Exit strategy & deal structuring</p></div>
+<div class="card"><h3>PMI</h3><p>Post-merger integration</p></div>
 </div>
+
 </div>
 </section>
 
 <section id="case">
 <div class="container">
-<h2 class="title">Case</h2>
-<p class="sub">실적 기반 신뢰</p>
+<h2 class="title">Selected Transactions</h2>
+<p class="sub">Representative deal experience</p>
 
 <div class="grid-3">
-<div class="card"><h3>500억 M&A</h3></div>
-<div class="card"><h3>120억 투자</h3></div>
-<div class="card"><h3>승계 구조</h3></div>
+<div class="card"><h3>Manufacturing M&A</h3><p>$40M transaction</p></div>
+<div class="card"><h3>Tech Fundraising</h3><p>Series A funding</p></div>
+<div class="card"><h3>Succession Planning</h3><p>Ownership restructuring</p></div>
 </div>
+
 </div>
 </section>
 
 <section id="contact">
 <div class="container">
 <h2 class="title">Contact</h2>
-<p class="sub">빠른 상담 문의</p>
+<p class="sub">Confidential Consultation Available</p>
 
 <div class="contact">
+
 <div class="card">
 <h3>Office</h3>
-<p>서울 영등포구</p>
-<p>info@waterbridge.com</p>
+<p>Seoul, Korea</p>
+<p>info@waterbridgepartners.co.kr</p>
 </div>
 
 <div>
-<input placeholder="회사명">
-<input placeholder="담당자">
-<input placeholder="연락처">
-<input placeholder="이메일">
-<textarea rows="5" placeholder="문의내용"></textarea>
-<button>문의하기</button>
+<input placeholder="Company">
+<input placeholder="Name">
+<input placeholder="Phone">
+<input placeholder="Email">
+<textarea rows="5" placeholder="Message"></textarea>
+<button>Submit Inquiry</button>
 </div>
 
 </div>
+
 </div>
 </section>
 
 <footer>
-© 2026 WaterBridge Partners
+© 2026 WaterBridge Partners. All Rights Reserved.
 </footer>
-
-<div class="sticky-cta">상담하기</div>
-
-<script>
-function toggleMenu(){
-document.getElementById("menu").classList.toggle("active");
-}
-</script>
 
 </body>
 </html>
