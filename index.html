@@ -12,6 +12,70 @@
 
 <style>
 
+/* ===== NEW FOOTER STYLE ===== */
+.footer-grid{
+display:grid;
+grid-template-columns:1.5fr 1fr;
+gap:60px;
+align-items:start;
+}
+
+.footer-left h3{
+font-size:28px;
+color:#d4af37;
+margin-bottom:10px;
+}
+
+.footer-left .tagline{
+color:#d4af37;
+font-weight:600;
+margin-bottom:20px;
+}
+
+.footer-left p{
+color:#aaa;
+line-height:1.8;
+margin-bottom:15px;
+}
+
+.footer-left .legal{
+color:#d4af37;
+font-weight:600;
+margin-top:20px;
+}
+
+.footer-right h4{
+color:#d4af37;
+margin-bottom:10px;
+}
+
+.footer-right p{
+color:#aaa;
+margin-bottom:8px;
+}
+
+.footer-btn{
+display:inline-block;
+margin-top:20px;
+padding:14px 28px;
+background:#d4af37;
+color:#111;
+font-weight:700;
+border-radius:4px;
+transition:.3s;
+}
+
+.footer-btn:hover{
+transform:translateY(-3px);
+background:#caa233;
+}
+
+@media(max-width:991px){
+.footer-grid{
+grid-template-columns:1fr;
+}
+}
+
 *{
 margin:0;
 padding:0;
@@ -718,23 +782,45 @@ style="border:0;">
 <!-- FOOTER -->
 <footer>
 <div class="container">
-<div class="footer-top">
-<div>
-<h3>WaterBridge Partners</h3>
-<p>가치를 연결하고 성장을 완성합니다.</p>
-</div>
 
-<div>
-<h4>Service</h4>
-<p>M&A Advisory</p>
-<p>Valuation</p>
-<p>Fund Raising</p>
-</div>
+<div class="footer-grid">
 
-<div>
-<h4>Contact</h4>
-<p>info@waterbridgepartners.co.kr</p>
-</div>
+  <!-- LEFT -->
+  <div class="footer-left">
+    <h3>WaterBridge Partners</h3>
+    <p class="tagline">
+      M&A · Investment · Valuation Advisory
+    </p>
+
+    <p>
+      기업가치와 자본 전략을 설계하는 전문 금융 자문 파트너입니다.<br>
+      모든 프로젝트는 철저한 비밀유지(NDA) 하에 진행됩니다.
+    </p>
+
+    <p class="legal">
+      Confidential & Legally Protected Advisory Services
+    </p>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="footer-right">
+
+    <h4>Core Services</h4>
+    <p>M&A Advisory</p>
+    <p>Valuation & Due Diligence</p>
+    <p>Fund Raising</p>
+    <p>Corporate Restructuring</p>
+    <p>Succession Planning</p>
+
+    <h4 style="margin-top:25px;">Contact</h4>
+    <p>info@waterbridgepartners.co.kr</p>
+    <p>Seoul, Republic of Korea</p>
+
+    <!-- CTA BUTTON -->
+    <a href="#contact" class="footer-btn">무료 상담 신청</a>
+
+  </div>
+
 </div>
 
 <hr>
@@ -742,8 +828,6 @@ style="border:0;">
 <p class="copyright">
 © 2026 WaterBridge Partners. All Rights Reserved.
 </p>
+
 </div>
 </footer>
-
-</body>
-</html>
