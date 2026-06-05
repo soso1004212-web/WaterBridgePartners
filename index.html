@@ -1,255 +1,1032 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>에스제이행사기획 | 행사기획 전문기업</title>
+
+<title>워터브릿지파트너스</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Malgun Gothic',sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
 }
 
 body{
-    line-height:1.6;
-    color:#333;
+font-family:'Pretendard',sans-serif;
+background:#0b1220;
+color:#fff;
+overflow-x:hidden;
 }
 
-header{
-    background:#1f2937;
-    color:white;
-    padding:20px 0;
-    position:sticky;
-    top:0;
+a{
+text-decoration:none;
+color:inherit;
 }
 
 .container{
-    width:90%;
-    max-width:1200px;
-    margin:auto;
-}
-
-nav{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.logo{
-    font-size:28px;
-    font-weight:bold;
-}
-
-.menu a{
-    color:white;
-    text-decoration:none;
-    margin-left:20px;
-}
-
-.hero{
-    background:url('https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600') center/cover;
-    height:600px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    color:white;
-}
-
-.hero-content{
-    background:rgba(0,0,0,0.5);
-    padding:40px;
-    border-radius:10px;
-}
-
-.hero h1{
-    font-size:52px;
-    margin-bottom:15px;
-}
-
-.hero p{
-    font-size:22px;
+width:90%;
+max-width:1400px;
+margin:auto;
 }
 
 section{
-    padding:80px 0;
+padding:120px 0;
 }
 
-.section-title{
-    text-align:center;
-    margin-bottom:50px;
-    font-size:36px;
+header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:999;
+background:rgba(11,18,32,.92);
+backdrop-filter:blur(10px);
 }
 
-.services{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:25px;
+.nav{
+height:90px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-.card{
-    background:#f8f8f8;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+.logo{
+font-size:32px;
+font-weight:800;
+color:#d4af37;
 }
 
-.card h3{
-    margin-bottom:15px;
+.menu{
+display:flex;
+gap:40px;
 }
 
-.about{
-    background:#f3f4f6;
+.menu a{
+font-size:15px;
+font-weight:600;
 }
 
-.contact{
-    background:#111827;
-    color:white;
-    text-align:center;
+.hero{
+height:100vh;
+
+background:
+linear-gradient(
+rgba(0,0,0,.6),
+rgba(0,0,0,.6)
+),
+url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000');
+
+background-size:cover;
+background-position:center;
+
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
 }
 
-.contact p{
-    margin:10px 0;
+.hero h1{
+font-size:90px;
+font-weight:800;
+line-height:1.1;
+margin-bottom:30px;
 }
 
-footer{
-    background:#000;
-    color:#aaa;
-    text-align:center;
-    padding:20px;
+.hero p{
+font-size:24px;
+color:#ddd;
+line-height:1.8;
+margin-bottom:40px;
 }
 
 .btn{
-    display:inline-block;
-    margin-top:20px;
-    padding:12px 25px;
-    background:#2563eb;
-    color:white;
-    text-decoration:none;
-    border-radius:5px;
+display:inline-block;
+padding:18px 45px;
+background:#d4af37;
+color:#111;
+font-weight:700;
+border-radius:4px;
 }
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:25px;
+margin-top:80px;
+}
+
+.stat-box{
+background:#111a2c;
+padding:40px;
+text-align:center;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.stat-box h2{
+font-size:42px;
+color:#d4af37;
+margin-bottom:10px;
+}
+
+.title{
+font-size:56px;
+font-weight:800;
+margin-bottom:30px;
+text-align:center;
+}
+
+.sub{
+text-align:center;
+color:#aaa;
+margin-bottom:70px;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <header>
-<div class="container">
-<nav>
-<div class="logo">에스제이행사기획</div>
+
+<div class="container nav">
+
+<div class="logo">
+WATERBRIDGE
+</div>
 
 <div class="menu">
+
 <a href="#about">회사소개</a>
-<a href="#service">사업분야</a>
-<a href="#contact">문의하기</a>
+
+<a href="#service">서비스</a>
+
+<a href="#team">전문인력</a>
+
+<a href="#case">성공사례</a>
+
+<a href="#news">뉴스룸</a>
+
+<a href="#contact">문의</a>
+
 </div>
-</nav>
+
 </div>
+
 </header>
 
 <section class="hero">
-<div class="hero-content">
-<h1>에스제이행사기획</h1>
-<p>축제 · 행사 · 문화관광 콘텐츠 전문 기획사</p>
-<a href="#contact" class="btn">상담문의</a>
-</div>
-</section>
 
-<section id="about" class="about">
-<div class="container">
-<h2 class="section-title">회사소개</h2>
+<div>
 
-<p style="text-align:center;font-size:18px;">
-에스제이행사기획은 지역축제, 문화관광, 기업행사,
-박람회, 공연 및 이벤트를 기획·운영하는 전문 행사기획 기업입니다.
-창의적인 콘텐츠와 체계적인 운영을 통해
-고객에게 최고의 경험을 제공합니다.
-</p>
+<h1>
+기업의 가치를 연결하고<br>
+성장을 설계합니다
+</h1>
 
-</div>
-</section>
-
-<section id="service">
-<div class="container">
-
-<h2 class="section-title">사업분야</h2>
-
-<div class="services">
-
-<div class="card">
-<h3>🎉 축제기획</h3>
 <p>
-지역축제, 문화축제, 계절축제 기획 및 운영
+M&A · 투자유치 · 기업가치평가 전문<br>
+워터브릿지파트너스
 </p>
-</div>
 
-<div class="card">
-<h3>🎪 행사운영</h3>
-<p>
-개막식, 기업행사, 박람회, 체험행사 운영
-</p>
-</div>
-
-<div class="card">
-<h3>🏛 문화관광 콘텐츠</h3>
-<p>
-관광자원 발굴 및 문화관광 프로그램 개발
-</p>
-</div>
-
-<div class="card">
-<h3>📢 홍보마케팅</h3>
-<p>
-SNS, 온라인 광고, 홍보 콘텐츠 제작
-</p>
-</div>
-
-</div>
-
-</div>
-</section>
-
-<section>
-<div class="container">
-<h2 class="section-title">주요업무</h2>
-
-<ul style="font-size:18px;line-height:2;">
-<li>문화관광 활성화 사업</li>
-<li>지역축제 기획 및 운영</li>
-<li>공공기관 행사 대행</li>
-<li>기업 프로모션 행사</li>
-<li>관광객 유치 프로그램 개발</li>
-<li>공연 및 체험 콘텐츠 운영</li>
-</ul>
-
-</div>
-</section>
-
-<section id="contact" class="contact">
-
-<div class="container">
-
-<h2 class="section-title">문의하기</h2>
-
-<p>회사명 : 에스제이행사기획</p>
-<p>담당자 : 이태수</p>
-<p>전화 : 010-1234-5678</p>
-<p>이메일 : soso100421@naver.com</p>
-
-<a href="tel:01012345678" class="btn">
-전화 상담하기
+<a href="#contact" class="btn">
+상담 문의
 </a>
 
 </div>
 
 </section>
 
+<section>
+
+<div class="container">
+
+<div class="stats">
+
+<div class="stat-box">
+<h2>500+</h2>
+<p>프로젝트</p>
+</div>
+
+<div class="stat-box">
+<h2>120+</h2>
+<p>M&A 자문</p>
+</div>
+
+<div class="stat-box">
+<h2>3조+</h2>
+<p>거래규모</p>
+</div>
+
+<div class="stat-box">
+<h2>98%</h2>
+<p>고객만족도</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ABOUT -->
+
+<section id="about">
+
+<div class="container">
+
+<h2 class="title">
+About WaterBridge
+</h2>
+
+<p class="sub">
+워터브릿지파트너스는 기업의 성장과 가치를 연결하는
+금융·M&A 전문 파트너입니다.
+</p>
+
+<div class="about-grid">
+
+<div class="about-card">
+
+<h3>기업금융 전문성</h3>
+
+<p>
+중소·중견기업의 자금조달,
+투자유치, 기업가치 향상을 위한
+전략적 금융 솔루션을 제공합니다.
+</p>
+
+</div>
+
+<div class="about-card">
+
+<h3>M&A 자문</h3>
+
+<p>
+인수합병, 매각, 기업승계,
+PMI까지 전 과정을 지원합니다.
+</p>
+
+</div>
+
+<div class="about-card">
+
+<h3>투자 네트워크</h3>
+
+<p>
+국내외 투자기관 및 전략적 투자자와의
+네트워크를 기반으로 최적의 기회를 제공합니다.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.about-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.about-card{
+background:#111a2c;
+padding:40px;
+border:1px solid rgba(255,255,255,.08);
+transition:.4s;
+}
+
+.about-card:hover{
+transform:translateY(-10px);
+border-color:#d4af37;
+}
+
+.about-card h3{
+margin-bottom:20px;
+font-size:24px;
+color:#d4af37;
+}
+
+.about-card p{
+line-height:1.8;
+color:#cfcfcf;
+}
+
+</style>
+
+<!-- SERVICE -->
+
+<section id="service">
+
+<div class="container">
+
+<h2 class="title">
+Our Services
+</h2>
+
+<p class="sub">
+기업 성장 단계별 맞춤형 금융 서비스를 제공합니다.
+</p>
+
+<div class="service-grid">
+
+<div class="service-card">
+<h3>M&A Advisory</h3>
+<p>
+기업 인수·합병,
+매각 자문,
+거래구조 설계
+</p>
+</div>
+
+<div class="service-card">
+<h3>Valuation</h3>
+<p>
+기업가치평가,
+주식가치평가,
+재무실사
+</p>
+</div>
+
+<div class="service-card">
+<h3>Fund Raising</h3>
+<p>
+투자유치,
+IR 전략,
+투자자 연결
+</p>
+</div>
+
+<div class="service-card">
+<h3>Corporate Finance</h3>
+<p>
+기업금융,
+정책자금,
+구조조정
+</p>
+</div>
+
+<div class="service-card">
+<h3>Succession</h3>
+<p>
+가업승계,
+지분정리,
+Exit 전략
+</p>
+</div>
+
+<div class="service-card">
+<h3>PMI</h3>
+<p>
+인수 후 통합관리,
+조직 재편,
+시너지 창출
+</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.service-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.service-card{
+background:#111a2c;
+padding:45px;
+text-align:center;
+border:1px solid rgba(255,255,255,.08);
+transition:.4s;
+}
+
+.service-card:hover{
+transform:translateY(-10px);
+border-color:#d4af37;
+}
+
+.service-card h3{
+font-size:24px;
+margin-bottom:20px;
+color:#d4af37;
+}
+
+.service-card p{
+line-height:1.8;
+color:#d0d0d0;
+}
+
+</style>
+
+<!-- TEAM -->
+
+<section id="team">
+
+<div class="container">
+
+<h2 class="title">
+Professional Team
+</h2>
+
+<p class="sub">
+금융·M&A 전문가 그룹
+</p>
+
+<div class="team-grid">
+
+<div class="team-card">
+
+<img src="images/team1.jpg">
+
+<h3>홍길동 대표</h3>
+
+<span>CEO</span>
+
+<p>
+前 투자은행 IB본부장
+20년 경력
+</p>
+
+</div>
+
+<div class="team-card">
+
+<img src="images/team2.jpg">
+
+<h3>김투자 부대표</h3>
+
+<span>Managing Director</span>
+
+<p>
+M&A 자문 전문가
+</p>
+
+</div>
+
+<div class="team-card">
+
+<img src="images/team3.jpg">
+
+<h3>이금융 이사</h3>
+
+<span>Director</span>
+
+<p>
+기업가치평가 전문가
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.team-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.team-card{
+background:#111a2c;
+text-align:center;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.team-card img{
+width:100%;
+height:320px;
+object-fit:cover;
+}
+
+.team-card h3{
+margin-top:25px;
+font-size:24px;
+}
+
+.team-card span{
+display:block;
+margin:10px 0;
+color:#d4af37;
+}
+
+.team-card p{
+padding:0 20px 30px;
+color:#ccc;
+}
+
+</style>
+
+<!-- CASE -->
+
+<section id="case">
+
+<div class="container">
+
+<h2 class="title">
+Success Stories
+</h2>
+
+<p class="sub">
+주요 자문 실적
+</p>
+
+<div class="case-grid">
+
+<div class="case-card">
+
+<h3>제조업 M&A</h3>
+
+<p>
+거래규모 500억 원
+</p>
+
+</div>
+
+<div class="case-card">
+
+<h3>IT 투자유치</h3>
+
+<p>
+Series A 120억 원
+</p>
+
+</div>
+
+<div class="case-card">
+
+<h3>기업승계 컨설팅</h3>
+
+<p>
+가업승계 및 지분정리
+</p>
+
+</div>
+
+<div class="case-card">
+
+<h3>기업가치평가</h3>
+
+<p>
+상장 준비 기업
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.case-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:25px;
+}
+
+.case-card{
+background:#111a2c;
+padding:50px 30px;
+text-align:center;
+border:1px solid rgba(255,255,255,.08);
+transition:.4s;
+}
+
+.case-card:hover{
+transform:translateY(-10px);
+border-color:#d4af37;
+}
+
+.case-card h3{
+margin-bottom:15px;
+color:#d4af37;
+}
+
+.case-card p{
+color:#d0d0d0;
+}
+
+</style>
+
+<!-- NEWSROOM -->
+
+<section id="news">
+
+<div class="container">
+
+<h2 class="title">
+Newsroom
+</h2>
+
+<p class="sub">
+워터브릿지파트너스의 최신 소식
+</p>
+
+<div class="news-grid">
+
+<div class="news-card">
+<span>2026.06.05</span>
+<h3>중소기업 투자유치 컨설팅 확대</h3>
+<p>
+성장기업 대상 투자유치 프로그램 운영
+</p>
+</div>
+
+<div class="news-card">
+<span>2026.05.28</span>
+<h3>M&A 전략 세미나 개최</h3>
+<p>
+기업가치를 높이는 실전 M&A 전략
+</p>
+</div>
+
+<div class="news-card">
+<span>2026.05.12</span>
+<h3>기업금융 서비스 런칭</h3>
+<p>
+정책자금 및 기업대출 컨설팅 제공
+</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.news-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.news-card{
+background:#111a2c;
+padding:35px;
+border:1px solid rgba(255,255,255,.08);
+transition:.4s;
+}
+
+.news-card:hover{
+transform:translateY(-10px);
+border-color:#d4af37;
+}
+
+.news-card span{
+color:#d4af37;
+font-size:14px;
+}
+
+.news-card h3{
+margin:15px 0;
+font-size:24px;
+}
+
+.news-card p{
+color:#cfcfcf;
+line-height:1.7;
+}
+
+</style>
+
+<!-- CONTACT -->
+
+<section id="contact">
+
+<div class="container">
+
+<h2 class="title">
+Contact Us
+</h2>
+
+<p class="sub">
+전문 컨설턴트가 상담해드립니다.
+</p>
+
+<div class="contact-wrap">
+
+<div class="contact-info">
+
+<h3>워터브릿지파트너스</h3>
+
+<p>대표번호 : 02-1234-5678</p>
+
+<p>이메일 : info@waterbridgepartners.co.kr</p>
+
+<p>서울특별시 영등포구 국제금융로 10</p>
+
+</div>
+
+<div class="contact-form">
+
+<input type="text" placeholder="회사명">
+
+<input type="text" placeholder="담당자명">
+
+<input type="tel" placeholder="연락처">
+
+<input type="email" placeholder="이메일">
+
+<textarea rows="6" placeholder="문의내용"></textarea>
+
+<button>
+상담 신청
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.contact-wrap{
+display:grid;
+grid-template-columns:1fr 1.5fr;
+gap:50px;
+}
+
+.contact-info{
+background:#111a2c;
+padding:40px;
+}
+
+.contact-info h3{
+font-size:28px;
+margin-bottom:30px;
+color:#d4af37;
+}
+
+.contact-info p{
+margin-bottom:15px;
+color:#ccc;
+}
+
+.contact-form{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.contact-form input,
+.contact-form textarea{
+padding:18px;
+background:#111a2c;
+border:1px solid rgba(255,255,255,.1);
+color:white;
+}
+
+.contact-form button{
+padding:18px;
+background:#d4af37;
+border:none;
+font-weight:700;
+cursor:pointer;
+}
+
+</style>
+
+<!-- MAP -->
+
+<section>
+
+<div class="container">
+
+<h2 class="title">
+Location
+</h2>
+
+<p class="sub">
+찾아오시는 길
+</p>
+
+<div class="map-box">
+
+<iframe
+src="https://maps.google.com/maps?q=yeouido&t=&z=13&ie=UTF8&iwloc=&output=embed"
+width="100%"
+height="500"
+style="border:0;">
+</iframe>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.map-box{
+overflow:hidden;
+border-radius:10px;
+}
+
+</style>
+
+<!-- FOOTER -->
+
 <footer>
-© 2026 sjplanning. All Rights Reserved.
+
+<div class="container">
+
+<div class="footer-top">
+
+<div>
+
+<h3>WaterBridge Partners</h3>
+
+<p>
+기업의 가치를 연결하고 성장을 설계합니다.
+</p>
+
+</div>
+
+<div>
+
+<h4>Service</h4>
+
+<p>M&A Advisory</p>
+
+<p>Valuation</p>
+
+<p>Fund Raising</p>
+
+</div>
+
+<div>
+
+<h4>Contact</h4>
+
+<p>info@waterbridgepartners.co.kr</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<p class="copyright">
+
+© 2026 WaterBridge Partners.
+All Rights Reserved.
+
+</p>
+
+</div>
+
 </footer>
+
+<style>
+
+footer{
+background:#060b15;
+padding:80px 0 40px;
+}
+
+.footer-top{
+display:grid;
+grid-template-columns:2fr 1fr 1fr;
+gap:50px;
+margin-bottom:40px;
+}
+
+.footer-top h3{
+font-size:28px;
+margin-bottom:20px;
+color:#d4af37;
+}
+
+.footer-top h4{
+margin-bottom:15px;
+color:#d4af37;
+}
+
+.footer-top p{
+color:#aaa;
+margin-bottom:10px;
+}
+
+footer hr{
+border:none;
+height:1px;
+background:rgba(255,255,255,.1);
+margin:30px 0;
+}
+
+.copyright{
+text-align:center;
+color:#777;
+}
+
+</style>
+
+<!-- MOBILE -->
+
+<style>
+
+@media(max-width:991px){
+
+.hero h1{
+font-size:50px;
+}
+
+.title{
+font-size:40px;
+}
+
+.stats,
+.about-grid,
+.service-grid,
+.team-grid,
+.case-grid,
+.news-grid,
+.footer-top,
+.contact-wrap{
+grid-template-columns:1fr;
+}
+
+.menu{
+display:none;
+}
+
+section{
+padding:80px 0;
+}
+
+}
+
+</style>
+
+<!-- SCROLL EFFECT -->
+
+<script>
+
+const observer =
+new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.style.opacity="1";
+entry.target.style.transform="translateY(0)";
+
+}
+
+});
+
+});
+
+document
+.querySelectorAll(
+'.about-card,.service-card,.team-card,.case-card,.news-card,.stat-box'
+)
+.forEach(el=>{
+
+el.style.opacity='0';
+
+el.style.transform='translateY(50px)';
+
+el.style.transition='all .8s ease';
+
+observer.observe(el);
+
+});
+
+</script>
 
 </body>
 </html>
