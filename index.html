@@ -1002,8 +1002,7 @@ section{padding:80px 0;}
       method="POST"
       target="hidden_iframe">
 
-  <input type="text" name="company" placeholder="회사명" required>
-  <input type="text" name="name" placeholder="담당자명" required>
+  <input type="text" name="name" placeholder="고객명" required>
 
   <!-- 휴대폰: 숫자만 + 10~11자리 -->
   <input type="tel" name="phone"
@@ -1134,7 +1133,7 @@ function sendToTelegram(message) {
     localStorage.setItem("sessionId", sessionId);
   }
 
-  fetch("http://localhost:3000/send", {
+fetch("https://waterbridge-chat.up.railway.app/send", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -1386,7 +1385,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 const socket = io("http://localhost:3000");
 
-socket.on("telegramReply", (data) => {
+const socket = io("https://waterbridge-chat.up.railway.app");
 
   const div = document.createElement("div");
   div.style.marginBottom = "10px";
