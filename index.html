@@ -1380,47 +1380,50 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <!-- SOCKET.IO 실시간 연결 -->
-<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-  const chatBtn = document.getElementById("chatBtn");
-  const chatBox = document.getElementById("chatBox");
+  function initChat() {
 
-  if (!chatBtn || !chatBox) return;
+    const chatBtn = document.getElementById("chatBtn");
+    const chatBox = document.getElementById("chatBox");
 
-  // 초기 상태 강제 고정
-  chatBox.style.display = "none";
-
-  // 🔥 단일 토글 함수
-  function toggleChat() {
-
-    if (chatBox.style.display === "flex") {
-      chatBox.style.display = "none";
+    if (!chatBtn || !chatBox) {
+      console.log("chat 요소 없음");
       return;
     }
 
-    chatBox.style.display = "flex";
-    chatBox.style.flexDirection = "column";
+    chatBox.style.display = "none";
 
-    // 첫 오픈 메시지
-    if (!chatBox.dataset.opened) {
-      chatBox.dataset.opened = "true";
+    chatBtn.addEventListener("click", function () {
 
-      const chatMessages = document.getElementById("chatMessages");
+      const isOpen = chatBox.style.display === "flex";
 
-      const div = document.createElement("div");
-      div.innerHTML = `
-        <b style="color:#d4af37">AI상담:</b> 안녕하세요 😊 워터브릿지파트너스입니다.
-      `;
+      chatBox.style.display = isOpen ? "none" : "flex";
+      chatBox.style.flexDirection = "column";
 
-      chatMessages.appendChild(div);
-    }
+      if (!isOpen && !chatBox.dataset.opened) {
+        chatBox.dataset.opened = "true";
+
+        const chatMessages = document.getElementById("chatMessages");
+        if (chatMessages) {
+          chatMessages.innerHTML += `
+            <div>
+              <b style="color:#d4af37">AI상담:</b> 안녕하세요 😊 워터브릿지파트너스입니다.
+            </div>
+          `;
+        }
+      }
+
+    });
+
   }
 
-  // 🔥 클릭 이벤트 단 1개만
-  chatBtn.addEventListener("click", toggleChat);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initChat);
+  } else {
+    initChat();
+  }
 
-});
+})();
 </script>
