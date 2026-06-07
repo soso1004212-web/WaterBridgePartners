@@ -1383,78 +1383,61 @@ document.addEventListener("DOMContentLoaded", function () {
 <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 
 <script>
-const socket = io("https://waterbridge-chat-server-production.up.railway.app", {
-  transports: ["websocket", "polling"]
-});
-
-// session 생성
-const sessionId = localStorage.getItem("sessionId")
-  || Math.random().toString(36).substring(2, 10);
-
-localStorage.setItem("sessionId", sessionId);
-
-// 🔥 room join (핵심)
-socket.emit("join", sessionId);
-
-// 메시지 전송
-function sendMessage(msg) {
-  fetch("https://waterbridge-chat-server-production.up.railway.app/send", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      message: msg,
-      sessionId
-    })
-  });
-}
-
-// 🔥 실시간 응답
-socket.on("reply", (data) => {
-  console.log("관리자:", data.text);
-
-  const box = document.getElementById("chatMessages");
-
-  const div = document.createElement("div");
-  div.innerHTML = "💬 " + data.text;
-
-  box.appendChild(div);
-});
-</script>
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-
-<script>
 document.addEventListener("DOMContentLoaded", function () {
 
   const socket = io("https://waterbridge-chat-server-production.up.railway.app");
 
-  // ✅ 1. 연결 성공 확인 (필수)
-  socket.on("connect", () => {
-    console.log("✅ SOCKET 연결 성공:", socket.id);
-  });
+  let sessionId = localStorage.getItem("sessionId");
 
-  // ❌ 연결 실패 확인 (필수)
-  socket.on("connect_error", (err) => {
-    console.log("❌ SOCKET 연결 실패:", err.message);
-  });
+  if (!sessionId) {
+    sessionId = Math.random().toString(36).substring(2, 10);
+    localStorage.setItem("sessionId", sessionId);
+  }
 
-  // ✅ 서버 응답 받기
-  socket.on("telegramReply", (data) => {
+  // room join
+  socket.emit("join", sessionId);
 
-    console.log("📩 상담원 응답 수신:", data);
+  // ======================
+  // 고객 메시지 전송 (실시간)
+  // ======================
+  function sendMessage(msg) {
+    socket.emit("message", {
+      sessionId,
+      text: msg,
+      from: "user"
+    });
+  }
+
+  // ======================
+  // 상담원 메시지 수신
+  // ======================
+  socket.on("message", (data) => {
+
+    if (data.sessionId !== sessionId) return;
 
     const chatMessages = document.getElementById("chatMessages");
 
     const div = document.createElement("div");
     div.style.marginBottom = "10px";
-    div.style.lineHeight = "1.4";
 
-    div.innerHTML = `
-      <span style="color:#d4af37;font-weight:700;">상담원:</span>
-      <span style="color:#fff;"> ${data.text}</span>
-    `;
+    if (data.from === "admin") {
+      div.innerHTML = `<b style="color:#d4af37">상담원:</b> ${data.text}`;
+    } else {
+      div.innerHTML = `<b style="color:#fff">고객:</b> ${data.text}`;
+    }
 
     chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+
+  // 기존 sendChat 버튼 연결
+  document.getElementById("sendChat").addEventListener("click", () => {
+    const input = document.getElementById("chatInput");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    sendMessage(msg);
+    input.value = "";
   });
 
 });
