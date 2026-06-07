@@ -1394,13 +1394,24 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("sessionId", sessionId);
   }
 
-  // room join
   socket.emit("join", sessionId);
 
+  const chatMessages = document.getElementById("chatMessages");
+
   // ======================
-  // 고객 메시지 전송 (실시간)
+  // 메시지 전송
   // ======================
   function sendMessage(msg) {
+
+    // 🔥 1) 내 메시지는 즉시 화면에 출력 (중복 방지 핵심)
+    const div = document.createElement("div");
+    div.style.marginBottom = "10px";
+    div.innerHTML = `<b style="color:#fff">고객:</b> ${msg}`;
+
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // 🔥 2) 서버로 전송
     socket.emit("message", {
       sessionId,
       text: msg,
@@ -1409,31 +1420,30 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ======================
-  // 상담원 메시지 수신
+  // 서버 메시지 수신 (상담원만 표시)
   // ======================
   socket.on("message", (data) => {
 
-    if (data.sessionId !== sessionId) return;
-
-    const chatMessages = document.getElementById("chatMessages");
+    // 🔥 user 메시지는 이미 내가 그렸으니까 무시
+    if (data.from === "user") return;
 
     const div = document.createElement("div");
     div.style.marginBottom = "10px";
 
-    if (data.from === "admin") {
-      div.innerHTML = `<b style="color:#d4af37">상담원:</b> ${data.text}`;
-    } else {
-      div.innerHTML = `<b style="color:#fff">고객:</b> ${data.text}`;
-    }
+    div.innerHTML = `<b style="color:#d4af37">상담원:</b> ${data.text}`;
 
     chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   });
 
-  // 기존 sendChat 버튼 연결
+  // ======================
+  // 버튼 클릭
+  // ======================
   document.getElementById("sendChat").addEventListener("click", () => {
+
     const input = document.getElementById("chatInput");
     const msg = input.value.trim();
+
     if (!msg) return;
 
     sendMessage(msg);
