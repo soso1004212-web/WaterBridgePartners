@@ -1379,28 +1379,39 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<!-- SOCKET.IO 실시간 연결 -->
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<!-- SOCKET.IO -->
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-  const socket = io("https://waterbridge-chat-server-production.up.railway.app");
+  const socket = io("https://waterbridge-chat-server-production.up.railway.app", {
+    transports: ["websocket", "polling"]
+  });
 
-  // ✅ 1. 연결 성공 확인 (필수)
+  // sessionId 생성
+  const sessionId = localStorage.getItem("sessionId")
+    || Math.random().toString(36).substring(2, 10);
+
+  localStorage.setItem("sessionId", sessionId);
+
+  // ✅ room join (이거 중요)
+  socket.emit("join", sessionId);
+
+  // 연결 성공
   socket.on("connect", () => {
     console.log("✅ SOCKET 연결 성공:", socket.id);
   });
 
-  // ❌ 연결 실패 확인 (필수)
+  // 연결 실패
   socket.on("connect_error", (err) => {
     console.log("❌ SOCKET 연결 실패:", err.message);
   });
 
-  // ✅ 서버 응답 받기
-  socket.on("telegramReply", (data) => {
+  // ⚡ 서버 응답 (이름 반드시 reply로 맞추기)
+  socket.on("reply", (data) => {
 
-    console.log("📩 상담원 응답 수신:", data);
+    console.log("📩 상담원 응답:", data);
 
     const chatMessages = document.getElementById("chatMessages");
 
