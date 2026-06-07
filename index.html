@@ -1467,7 +1467,10 @@ document.addEventListener("DOMContentLoaded", function () {
 </div>
 
 <script>
-(function () {
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
   const chatBtn = document.getElementById("chatBtn");
   const chatBox = document.getElementById("chatBox");
@@ -1475,18 +1478,33 @@ document.addEventListener("DOMContentLoaded", function () {
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
 
-  if (!chatBtn || !chatBox) return;
+  if (!chatBtn || !chatBox) {
+    console.error("chat UI missing");
+    return;
+  }
+
+  chatBox.style.display = "none";
+
+  /* ================= SOCKET ================= */
+  const socket = io("https://waterbridge-chat-server-production.up.railway.app");
 
   let sessionId = localStorage.getItem("sessionId");
-
   if (!sessionId) {
     sessionId = Math.random().toString(36).substring(2, 10);
     localStorage.setItem("sessionId", sessionId);
   }
 
-  // =========================
-  // OPEN / CLOSE
-  // =========================
+  socket.emit("join", sessionId);
+
+  /* ================= UI ================= */
+  function addMessage(sender, text) {
+    const div = document.createElement("div");
+    div.innerHTML = `<b style="color:#d4af37">${sender}:</b> ${text}`;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  /* ================= TOGGLE FIX ================= */
   chatBtn.addEventListener("click", () => {
 
     if (chatBox.style.display === "flex") {
@@ -1499,20 +1517,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!chatBox.dataset.opened) {
       chatBox.dataset.opened = "true";
-
-      addMessage("AI상담", "안녕하세요 😊 워터브릿지파트너스입니다.");
+      addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
     }
   });
 
-  // =========================
-  // SEND MESSAGE
-  // =========================
-  sendBtn.addEventListener("click", sendMessage);
-
-  chatInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") sendMessage();
-  });
-
+  /* ================= SEND ================= */
   function sendMessage() {
 
     const msg = chatInput.value.trim();
@@ -1521,51 +1530,24 @@ document.addEventListener("DOMContentLoaded", function () {
     addMessage("고객", msg);
     chatInput.value = "";
 
-    // 👉 서버로 전송 (운영용)
-    fetch("https://waterbridge-chat-server-production.up.railway.app/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: msg,
-        sessionId
-      })
+    socket.emit("message", {
+      sessionId,
+      text: msg,
+      from: "user"
     });
-
-    // 👉 임시 AI 응답 (서버 없을 때 fallback)
-    setTimeout(() => {
-      addMessage("AI상담", getAI(msg));
-    }, 700);
   }
 
-  // =========================
-  // UI MESSAGE
-  // =========================
-  function addMessage(sender, text) {
-    const div = document.createElement("div");
-    div.style.marginBottom = "10px";
+  sendBtn.addEventListener("click", sendMessage);
 
-    const color = sender === "고객" ? "#fff" : "#d4af37";
+  chatInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
 
-    div.innerHTML = `<b style="color:${color}">${sender}:</b> ${text}`;
+  /* ================= RECEIVE ================= */
+  socket.on("message", (data) => {
+    if (data.from === "user") return;
+    addMessage(data.from === "bot" ? "AI" : "상담원", data.text);
+  });
 
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  // =========================
-  // SIMPLE AI FALLBACK
-  // =========================
-  function getAI(msg) {
-
-    msg = msg.toLowerCase();
-
-    if (msg.includes("m&a")) return "M&A 전문 상담 가능합니다.";
-    if (msg.includes("투자")) return "투자유치 상담 가능합니다.";
-    if (msg.includes("비용")) return "프로젝트별로 상이합니다.";
-    if (msg.includes("시간")) return "상담시간은 09:00~18:00 입니다.";
-
-    return "상담원이 곧 확인 후 답변드립니다.";
-  }
-
-})();
+});
 </script>
