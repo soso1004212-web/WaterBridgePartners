@@ -1380,49 +1380,191 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <!-- SOCKET.IO 실시간 연결 -->
+<!-- ===================== -->
+<!-- 💬 OPERATING CHAT WIDGET -->
+<!-- ===================== -->
+
+<style>
+#chatBtn{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#d4af37;
+  color:#111;
+  padding:14px 18px;
+  border-radius:50px;
+  font-weight:700;
+  cursor:pointer;
+  z-index:999999;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+#chatBox{
+  position:fixed;
+  right:20px;
+  bottom:80px;
+  width:340px;
+  height:460px;
+  background:#0b1220;
+  border:1px solid rgba(255,255,255,0.08);
+  display:none;
+  flex-direction:column;
+  z-index:999999;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+#chatHeader{
+  background:#d4af37;
+  color:#111;
+  padding:12px;
+  font-weight:800;
+  text-align:center;
+}
+
+#chatMessages{
+  flex:1;
+  padding:10px;
+  overflow-y:auto;
+  color:#fff;
+  font-size:14px;
+}
+
+#chatInputArea{
+  display:flex;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
+#chatInput{
+  flex:1;
+  padding:12px;
+  border:none;
+  outline:none;
+  background:#111a2c;
+  color:#fff;
+}
+
+#sendChat{
+  background:#d4af37;
+  border:none;
+  padding:0 14px;
+  font-weight:700;
+  cursor:pointer;
+}
+</style>
+
+<div id="chatBtn">💬 실시간상담</div>
+
+<div id="chatBox">
+  <div id="chatHeader">실시간 상담</div>
+
+  <div id="chatMessages"></div>
+
+  <div id="chatInputArea">
+    <input id="chatInput" type="text" placeholder="메시지를 입력하세요">
+    <button id="sendChat">전송</button>
+  </div>
+</div>
+
 <script>
 (function () {
 
-  function initChat() {
+  const chatBtn = document.getElementById("chatBtn");
+  const chatBox = document.getElementById("chatBox");
+  const chatInput = document.getElementById("chatInput");
+  const sendBtn = document.getElementById("sendChat");
+  const chatMessages = document.getElementById("chatMessages");
 
-    const chatBtn = document.getElementById("chatBtn");
-    const chatBox = document.getElementById("chatBox");
+  if (!chatBtn || !chatBox) return;
 
-    if (!chatBtn || !chatBox) {
-      console.log("chat 요소 없음");
+  let sessionId = localStorage.getItem("sessionId");
+
+  if (!sessionId) {
+    sessionId = Math.random().toString(36).substring(2, 10);
+    localStorage.setItem("sessionId", sessionId);
+  }
+
+  // =========================
+  // OPEN / CLOSE
+  // =========================
+  chatBtn.addEventListener("click", () => {
+
+    if (chatBox.style.display === "flex") {
+      chatBox.style.display = "none";
       return;
     }
 
-    chatBox.style.display = "none";
+    chatBox.style.display = "flex";
+    chatBox.style.flexDirection = "column";
 
-    chatBtn.addEventListener("click", function () {
+    if (!chatBox.dataset.opened) {
+      chatBox.dataset.opened = "true";
 
-      const isOpen = chatBox.style.display === "flex";
+      addMessage("AI상담", "안녕하세요 😊 워터브릿지파트너스입니다.");
+    }
+  });
 
-      chatBox.style.display = isOpen ? "none" : "flex";
-      chatBox.style.flexDirection = "column";
+  // =========================
+  // SEND MESSAGE
+  // =========================
+  sendBtn.addEventListener("click", sendMessage);
 
-      if (!isOpen && !chatBox.dataset.opened) {
-        chatBox.dataset.opened = "true";
+  chatInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
 
-        const chatMessages = document.getElementById("chatMessages");
-        if (chatMessages) {
-          chatMessages.innerHTML += `
-            <div>
-              <b style="color:#d4af37">AI상담:</b> 안녕하세요 😊 워터브릿지파트너스입니다.
-            </div>
-          `;
-        }
-      }
+  function sendMessage() {
 
+    const msg = chatInput.value.trim();
+    if (!msg) return;
+
+    addMessage("고객", msg);
+    chatInput.value = "";
+
+    // 👉 서버로 전송 (운영용)
+    fetch("https://waterbridge-chat-server-production.up.railway.app/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: msg,
+        sessionId
+      })
     });
 
+    // 👉 임시 AI 응답 (서버 없을 때 fallback)
+    setTimeout(() => {
+      addMessage("AI상담", getAI(msg));
+    }, 700);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initChat);
-  } else {
-    initChat();
+  // =========================
+  // UI MESSAGE
+  // =========================
+  function addMessage(sender, text) {
+    const div = document.createElement("div");
+    div.style.marginBottom = "10px";
+
+    const color = sender === "고객" ? "#fff" : "#d4af37";
+
+    div.innerHTML = `<b style="color:${color}">${sender}:</b> ${text}`;
+
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  // =========================
+  // SIMPLE AI FALLBACK
+  // =========================
+  function getAI(msg) {
+
+    msg = msg.toLowerCase();
+
+    if (msg.includes("m&a")) return "M&A 전문 상담 가능합니다.";
+    if (msg.includes("투자")) return "투자유치 상담 가능합니다.";
+    if (msg.includes("비용")) return "프로젝트별로 상이합니다.";
+    if (msg.includes("시간")) return "상담시간은 09:00~18:00 입니다.";
+
+    return "상담원이 곧 확인 후 답변드립니다.";
   }
 
 })();
