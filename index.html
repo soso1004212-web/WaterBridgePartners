@@ -1273,206 +1273,7 @@ loading="lazy">
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const ctaBtn = document.getElementById("ctaBtn");
-  const heroBtn = document.getElementById("heroCtaBtn");
-  const contactSection = document.getElementById("contact");
-  const form = document.querySelector(".contact-form");
-
-  function goToContact(e){
-    e.preventDefault();
-
-    contactSection.scrollIntoView({ behavior: "smooth" });
-
-    setTimeout(() => {
-      form.classList.add("form-highlight");
-
-      setTimeout(() => {
-        form.classList.remove("form-highlight");
-      }, 1500);
-
-    }, 500);
-  }
-
-  // 하단 버튼
-  ctaBtn.addEventListener("click", goToContact);
-
-  // 상단 버튼
-  heroBtn.addEventListener("click", goToContact);
-
-});
-</script>
-
-<script>
-// 기존 코드 (그대로)
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const ctaBtn = document.getElementById("ctaBtn");
-  const heroBtn = document.getElementById("heroCtaBtn");
-  const contactSection = document.getElementById("contact");
-  const form = document.querySelector(".contact-form");
-
-  function goToContact(e){
-    e.preventDefault();
-
-    contactSection.scrollIntoView({ behavior: "smooth" });
-
-    setTimeout(() => {
-      form.classList.add("form-highlight");
-
-      setTimeout(() => {
-        form.classList.remove("form-highlight");
-      }, 1500);
-
-    }, 500);
-
-  }
-
-  ctaBtn.addEventListener("click", goToContact);
-  heroBtn.addEventListener("click", goToContact);
-
-});
-
-
-// ✅ 여기 아래에 "숫자 애니메이션 코드 붙여넣기"
-function animateCount(el, target, suffix = "") {
-  let start = 0;
-  let duration = 1500;
-  let stepTime = 20;
-
-  let increment = target / (duration / stepTime);
-
-  let timer = setInterval(() => {
-    start += increment;
-
-    if (start >= target) {
-      start = target;
-      clearInterval(timer);
-    }
-
-    el.innerText = Math.floor(start) + suffix;
-  }, stepTime);
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const counters = document.querySelectorAll(".count");
-
-  counters.forEach((counter) => {
-    let value = parseInt(counter.getAttribute("data-value"));
-
-    let suffix = "";
-
-    if (counter.parentElement.innerText.includes("조")) {
-      suffix = "조+";
-    } else if (counter.innerText.includes("%") || counter.parentElement.innerText.includes("만족")) {
-      suffix = "%";
-    } else {
-      suffix = "+";
-    }
-
-    animateCount(counter, value, suffix);
-  });
-
-});
-</script>
-
-<!-- SOCKET.IO 실시간 연결 -->
-<!-- ===================== -->
-<!-- 💬 OPERATING CHAT WIDGET -->
-<!-- ===================== -->
-
-<style>
-#chatBtn{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  background:#d4af37;
-  color:#111;
-  padding:14px 18px;
-  border-radius:50px;
-  font-weight:700;
-  cursor:pointer;
-  z-index:999999;
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
-}
-
-#chatBox{
-  position:fixed;
-  right:20px;
-  bottom:80px;
-  width:340px;
-  height:460px;
-  background:#0b1220;
-  border:1px solid rgba(255,255,255,0.08);
-  display:none;
-  flex-direction:column;
-  z-index:999999;
-  border-radius:12px;
-  overflow:hidden;
-}
-
-#chatHeader{
-  background:#d4af37;
-  color:#111;
-  padding:12px;
-  font-weight:800;
-  text-align:center;
-}
-
-#chatMessages{
-  flex:1;
-  padding:10px;
-  overflow-y:auto;
-  color:#fff;
-  font-size:14px;
-}
-
-#chatInputArea{
-  display:flex;
-  border-top:1px solid rgba(255,255,255,0.1);
-}
-
-#chatInput{
-  flex:1;
-  padding:12px;
-  border:none;
-  outline:none;
-  background:#111a2c;
-  color:#fff;
-}
-
-#sendChat{
-  background:#d4af37;
-  border:none;
-  padding:0 14px;
-  font-weight:700;
-  cursor:pointer;
-}
-</style>
-
-<div id="chatBtn">💬 실시간상담</div>
-
-<div id="chatBox">
-  <div id="chatHeader">실시간 상담</div>
-
-  <div id="chatMessages"></div>
-
-  <div id="chatInputArea">
-    <input id="chatInput" type="text" placeholder="메시지를 입력하세요">
-    <button id="sendChat">전송</button>
-  </div>
-</div>
-
-<script>
-<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
-
-<script>
-<!-- 고객 사이트 -->
-<script src="https://chat.yourdomain.com/widget.js"></script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
   const chatBtn = document.getElementById("chatBtn");
   const chatBox = document.getElementById("chatBox");
@@ -1480,36 +1281,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
 
-  if (!chatBtn || !chatBox) {
-    console.error("chat UI missing");
-    return;
-  }
+  if (!chatBtn || !chatBox || !chatInput || !sendBtn) return;
 
-  chatBox.style.display = "none";
-
-  /* ================= SOCKET ================= */
+  // ================= SOCKET =================
   const socket = io("https://waterbridge-chat-server-production.up.railway.app");
 
+  // 세션 고정
   let sessionId = localStorage.getItem("sessionId");
   if (!sessionId) {
-    sessionId = Math.random().toString(36).substring(2, 10);
+    sessionId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 10);
     localStorage.setItem("sessionId", sessionId);
   }
 
   socket.emit("join", sessionId);
 
-  /* ================= UI ================= */
+  // ================= UI =================
   function addMessage(sender, text) {
     const div = document.createElement("div");
-    div.innerHTML = `<b style="color:#d4af37">${sender}:</b> ${text}`;
+    div.style.marginBottom = "8px";
+    div.innerHTML = `<b style="color:#d4af37">${sender}</b>: ${text}`;
     chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  /* ================= TOGGLE FIX ================= */
+  // ================= TOGGLE =================
   chatBtn.addEventListener("click", () => {
+    const isOpen = chatBox.style.display === "flex";
 
-    if (chatBox.style.display === "flex") {
+    if (isOpen) {
       chatBox.style.display = "none";
       return;
     }
@@ -1517,15 +1316,15 @@ document.addEventListener("DOMContentLoaded", function () {
     chatBox.style.display = "flex";
     chatBox.style.flexDirection = "column";
 
+    // 최초 1회 인사
     if (!chatBox.dataset.opened) {
       chatBox.dataset.opened = "true";
       addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
     }
   });
 
-  /* ================= SEND ================= */
+  // ================= SEND =================
   function sendMessage() {
-
     const msg = chatInput.value.trim();
     if (!msg) return;
 
@@ -1545,10 +1344,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.key === "Enter") sendMessage();
   });
 
-  /* ================= RECEIVE ================= */
+  // ================= RECEIVE =================
   socket.on("message", (data) => {
+    if (!data) return;
     if (data.from === "user") return;
-    addMessage(data.from === "bot" ? "AI" : "상담원", data.text);
+
+    addMessage(
+      data.from === "bot" ? "AI" : "상담원",
+      data.text
+    );
   });
 
 });
