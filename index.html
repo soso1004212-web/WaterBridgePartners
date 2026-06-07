@@ -1383,17 +1383,22 @@ document.addEventListener("DOMContentLoaded", function () {
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
 <script>
+
 const socket = io("https://waterbridge-chat-server-production.up.railway.app");
 
-const socket = io("https://waterbridge-chat.up.railway.app");
+socket.on("telegramReply", (data) => {
 
   const div = document.createElement("div");
+
   div.style.marginBottom = "10px";
+
   div.innerHTML = `
     <span style="color:#d4af37;font-weight:700;">상담원:</span>
     <span style="color:#fff;"> ${data.text}</span>
   `;
 
   document.getElementById("chatMessages").appendChild(div);
+
 });
+
 </script>
