@@ -1133,7 +1133,7 @@ function sendToTelegram(message) {
     localStorage.setItem("sessionId", sessionId);
   }
 
-fetch("https://waterbridge-chat.up.railway.app/send", {
+fetch("https://waterbridge-chat-server-production.up.railway.app/send", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
