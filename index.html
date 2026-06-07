@@ -1385,10 +1385,20 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
+  const chatBtn = document.getElementById("chatBtn");
+  const chatBox = document.getElementById("chatBox");
+  const sendBtn = document.getElementById("sendChat");
+  const chatInput = document.getElementById("chatInput");
+  const chatMessages = document.getElementById("chatMessages");
+
+  chatBox.style.display = "none";
+
+  // =========================
+  // Socket 연결
+  // =========================
   const socket = io("https://waterbridge-chat-server-production.up.railway.app");
 
   let sessionId = localStorage.getItem("sessionId");
-
   if (!sessionId) {
     sessionId = Math.random().toString(36).substring(2, 10);
     localStorage.setItem("sessionId", sessionId);
@@ -1396,22 +1406,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
   socket.emit("join", sessionId);
 
-  const chatMessages = document.getElementById("chatMessages");
-
-  // ======================
-  // 메시지 전송
-  // ======================
-  function sendMessage(msg) {
-
-    // 🔥 1) 내 메시지는 즉시 화면에 출력 (중복 방지 핵심)
+  // =========================
+  // 메시지 출력 (단일 함수)
+  // =========================
+  function addMessage(sender, text) {
     const div = document.createElement("div");
     div.style.marginBottom = "10px";
-    div.innerHTML = `<b style="color:#fff">고객:</b> ${msg}`;
+
+    const color = sender === "고객" ? "#fff" : "#d4af37";
+
+    div.innerHTML = `
+      <b style="color:${color}">${sender}:</b> ${text}
+    `;
 
     chatMessages.appendChild(div);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 
-    // 🔥 2) 서버로 전송
+  // =========================
+  // 메시지 전송 (통합)
+  // =========================
+  function sendMessage() {
+    const msg = chatInput.value.trim();
+    if (!msg) return;
+
+    chatInput.value = "";
+
+    // 1. 내 화면 출력 (딱 1번)
+    addMessage("고객", msg);
+
+    // 2. 텔레그램 전송
+    sendToTelegram(msg);
+
+    // 3. 서버 전송
     socket.emit("message", {
       sessionId,
       text: msg,
@@ -1419,35 +1446,62 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ======================
-  // 서버 메시지 수신 (상담원만 표시)
-  // ======================
+  // =========================
+  // 텔레그램 전송
+  // =========================
+  function sendToTelegram(message) {
+    fetch("https://waterbridge-chat-server-production.up.railway.app/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message,
+        sessionId
+      })
+    });
+  }
+
+  // =========================
+  // 서버 메시지 수신
+  // =========================
   socket.on("message", (data) => {
 
-    // 🔥 user 메시지는 이미 내가 그렸으니까 무시
+    // user 메시지는 무시 (중복 방지 핵심)
     if (data.from === "user") return;
 
-    const div = document.createElement("div");
-    div.style.marginBottom = "10px";
-
-    div.innerHTML = `<b style="color:#d4af37">상담원:</b> ${data.text}`;
-
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    addMessage("상담원", data.text);
   });
 
-  // ======================
-  // 버튼 클릭
-  // ======================
-  document.getElementById("sendChat").addEventListener("click", () => {
+  // =========================
+  // 채팅 열기/닫기
+  // =========================
+  chatBtn.addEventListener("click", function () {
 
-    const input = document.getElementById("chatInput");
-    const msg = input.value.trim();
+    if (chatBox.style.display === "flex") {
+      chatBox.style.display = "none";
+      return;
+    }
 
-    if (!msg) return;
+    chatBox.style.display = "flex";
+    chatBox.style.flexDirection = "column";
 
-    sendMessage(msg);
-    input.value = "";
+    if (!chatBox.dataset.opened) {
+      chatBox.dataset.opened = "true";
+
+      setTimeout(() => {
+        addMessage("AI상담", "안녕하세요 😊 워터브릿지파트너스입니다. 무엇을 도와드릴까요?");
+      }, 500);
+    }
+  });
+
+  // =========================
+  // 버튼 & 엔터
+  // =========================
+  sendBtn.addEventListener("click", sendMessage);
+
+  chatInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") sendMessage();
   });
 
 });
