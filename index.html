@@ -1387,37 +1387,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const chatBtn = document.getElementById("chatBtn");
   const chatBox = document.getElementById("chatBox");
-  const chatInput = document.getElementById("chatInput");
-  const sendBtn = document.getElementById("sendChat");
-  const chatMessages = document.getElementById("chatMessages");
 
-  if (!chatBtn || !chatBox || !chatInput || !sendBtn) return;
+  if (!chatBtn || !chatBox) return;
 
-  const socket = io("https://waterbridge-chat-server-production.up.railway.app");
+  // 초기 상태 강제 고정
+  chatBox.style.display = "none";
 
-  let sessionId = localStorage.getItem("sessionId");
-  if (!sessionId) {
-    sessionId = Math.random().toString(36).substring(2, 10);
-    localStorage.setItem("sessionId", sessionId);
-  }
+  // 🔥 단일 토글 함수
+  function toggleChat() {
 
-  socket.emit("join", sessionId);
-
-  // ===== 메시지 출력 (하나만 유지) =====
-  function addMessage(sender, text) {
-    const div = document.createElement("div");
-    div.style.marginBottom = "10px";
-
-    const color = sender === "고객" ? "#fff" : "#d4af37";
-
-    div.innerHTML = `<b style="color:${color}">${sender}:</b> ${text}`;
-    chatMessages.appendChild(div);
-
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  // ===== 채팅 열기 =====
-  chatBtn.addEventListener("click", () => {
     if (chatBox.style.display === "flex") {
       chatBox.style.display = "none";
       return;
@@ -1426,46 +1404,23 @@ document.addEventListener("DOMContentLoaded", function () {
     chatBox.style.display = "flex";
     chatBox.style.flexDirection = "column";
 
+    // 첫 오픈 메시지
     if (!chatBox.dataset.opened) {
       chatBox.dataset.opened = "true";
-      addMessage("AI상담", "안녕하세요 😊 워터브릿지파트너스입니다.");
+
+      const chatMessages = document.getElementById("chatMessages");
+
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <b style="color:#d4af37">AI상담:</b> 안녕하세요 😊 워터브릿지파트너스입니다.
+      `;
+
+      chatMessages.appendChild(div);
     }
-  });
-
-  // ===== 메시지 전송 (핵심) =====
-  function sendMessage() {
-    const msg = chatInput.value.trim();
-    if (!msg) return;
-
-    addMessage("고객", msg);
-    chatInput.value = "";
-
-    // 서버 전송 (중복 없이 1번만)
-    socket.emit("message", {
-      sessionId,
-      text: msg,
-      from: "user"
-    });
-
-    fetch("https://waterbridge-chat-server-production.up.railway.app/send", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ message: msg, sessionId })
-    });
   }
 
-  // ===== 서버 응답 =====
-  socket.on("message", (data) => {
-    if (data.from === "user") return;
-    addMessage("상담원", data.text);
-  });
-
-  // ===== 이벤트 =====
-  sendBtn.addEventListener("click", sendMessage);
-
-  chatInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") sendMessage();
-  });
+  // 🔥 클릭 이벤트 단 1개만
+  chatBtn.addEventListener("click", toggleChat);
 
 });
 </script>
