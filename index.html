@@ -1391,6 +1391,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
 
+  if (!chatBtn || !chatBox || !chatInput || !sendBtn) return;
+
   const socket = io("https://waterbridge-chat-server-production.up.railway.app");
 
   let sessionId = localStorage.getItem("sessionId");
@@ -1401,16 +1403,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   socket.emit("join", sessionId);
 
+  // ===== 메시지 출력 (하나만 유지) =====
   function addMessage(sender, text) {
     const div = document.createElement("div");
     div.style.marginBottom = "10px";
+
     const color = sender === "고객" ? "#fff" : "#d4af37";
+
     div.innerHTML = `<b style="color:${color}">${sender}:</b> ${text}`;
     chatMessages.appendChild(div);
+
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  function toggleChat() {
+  // ===== 채팅 열기 =====
+  chatBtn.addEventListener("click", () => {
     if (chatBox.style.display === "flex") {
       chatBox.style.display = "none";
       return;
@@ -1423,16 +1430,17 @@ document.addEventListener("DOMContentLoaded", function () {
       chatBox.dataset.opened = "true";
       addMessage("AI상담", "안녕하세요 😊 워터브릿지파트너스입니다.");
     }
-  }
+  });
 
+  // ===== 메시지 전송 (핵심) =====
   function sendMessage() {
     const msg = chatInput.value.trim();
     if (!msg) return;
 
+    addMessage("고객", msg);
     chatInput.value = "";
 
-    addMessage("고객", msg);
-
+    // 서버 전송 (중복 없이 1번만)
     socket.emit("message", {
       sessionId,
       text: msg,
@@ -1446,14 +1454,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ===== 서버 응답 =====
   socket.on("message", (data) => {
     if (data.from === "user") return;
     addMessage("상담원", data.text);
   });
 
-  chatBtn.addEventListener("click", toggleChat);
+  // ===== 이벤트 =====
   sendBtn.addEventListener("click", sendMessage);
-  chatInput.addEventListener("keypress", e => {
+
+  chatInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
   });
 
