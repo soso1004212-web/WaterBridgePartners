@@ -1185,21 +1185,38 @@ fetch("https://waterbridge-chat-server-production.up.railway.app/send", {
 
 <!-- MAP -->
 <section>
-<div class="container">
-<h2 class="title">Location</h2>
-<p class="sub">찾아오시는 길</p>
+  <div class="container">
+    <h2 class="title">Location</h2>
+    <p class="sub">찾아오시는 길</p>
 
-<div class="map-box">
-  <iframe
-    src="https://www.google.com/maps?q=서울특별시%20영등포구%20여의도동%2044-32%20에리트빌딩%2010층%201002호&output=embed"
-    width="100%"
-    height="500"
-    style="border:0;"
-    allowfullscreen=""
-    loading="lazy">
-  </iframe>
-</div>
-</div>
+    <style>
+      .map-box {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 비율 */
+        overflow: hidden;
+        border-radius: 10px;
+      }
+
+      .map-box iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    </style>
+
+    <div class="map-box">
+      <iframe
+        src="https://www.google.com/maps?q=서울특별시%20영등포구%20여의도동%2044-32%20에리트빌딩%2010층%201002호&output=embed"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+    </div>
+
+  </div>
 </section>
 
 <!-- FOOTER -->
