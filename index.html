@@ -1299,93 +1299,15 @@ document.addEventListener("DOMContentLoaded", () => {
 <!-- ===================== -->
 <!-- 💬 LIVE CHAT CLEAN VERSION -->
 <!-- ===================== -->
-
-<!-- Socket.io 필수 -->
 <script src="/socket.io/socket.io.js"></script>
-
-<div id="chatBtn">💬 실시간상담</div>
-
-<div id="chatBox">
-  <div id="chatHeader">실시간 상담</div>
-
-  <div id="chatMessages"></div>
-
-  <div id="chatInputArea">
-    <input id="chatInput" type="text" placeholder="메시지를 입력하세요">
-    <button id="sendChat">전송</button>
-  </div>
-</div>
-
-<style>
-#chatBtn{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  background:#d4af37;
-  color:#111;
-  padding:14px 18px;
-  border-radius:50px;
-  font-weight:700;
-  cursor:pointer;
-  z-index:99999;
-}
-
-#chatBox{
-  position:fixed;
-  right:20px;
-  bottom:80px;
-  width:320px;
-  height:420px;
-  background:#111a2c;
-  border:1px solid rgba(255,255,255,0.1);
-  display:none;
-  flex-direction:column;
-  z-index:99999;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-#chatHeader{
-  background:#d4af37;
-  color:#111;
-  padding:12px;
-  font-weight:800;
-  text-align:center;
-}
-
-#chatMessages{
-  flex:1;
-  padding:10px;
-  overflow-y:auto;
-  color:#fff;
-  font-size:14px;
-}
-
-#chatInputArea{
-  display:flex;
-  border-top:1px solid rgba(255,255,255,0.1);
-}
-
-#chatInput{
-  flex:1;
-  padding:12px;
-  border:none;
-  outline:none;
-  background:#0b1220;
-  color:#fff;
-}
-
-#sendChat{
-  background:#d4af37;
-  border:none;
-  padding:0 14px;
-  font-weight:700;
-  cursor:pointer;
-}
-</style>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+  const API = "https://waterbridge-chat-server-production.up.railway.app";
+  const socket = io(API, {
+    transports: ["websocket", "polling"]
+  });
 
   const chatBtn = document.getElementById("chatBtn");
   const chatBox = document.getElementById("chatBox");
@@ -1393,10 +1315,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
 
-  // ================= SOCKET =================
-  const socket = io();
-
-  // 세션 고정
+  // ================= SESSION =================
   let sessionId = localStorage.getItem("sessionId");
 
   if (!sessionId) {
@@ -1404,7 +1323,9 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("sessionId", sessionId);
   }
 
-  socket.emit("join", sessionId);
+  socket.on("connect", () => {
+    socket.emit("join", sessionId);
+  });
 
   // ================= UI =================
   function addMessage(sender, text) {
@@ -1415,7 +1336,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // ================= OPEN / CLOSE =================
+  // ================= OPEN CHAT =================
   chatBtn.addEventListener("click", () => {
     const isOpen = chatBox.style.display === "flex";
 
@@ -1438,29 +1359,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const msg = chatInput.value.trim();
     if (!msg) return;
 
+    // 내 메시지 즉시 표시
     addMessage("고객", msg);
-    chatInput.value = "";
 
     socket.emit("message", {
       sessionId,
       text: msg,
       from: "user"
     });
+
+    chatInput.value = "";
   }
 
   sendBtn.addEventListener("click", sendMessage);
 
-  chatInput.addEventListener("keypress", (e) => {
+  chatInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") sendMessage();
   });
 
   // ================= RECEIVE =================
   socket.on("message", (data) => {
     if (!data) return;
+
+    // 🔥 중복 방지 (내 메시지 다시 안 그리기)
     if (data.from === "user") return;
 
     addMessage(
-      data.from === "bot" ? "AI" : "상담원",
+      data.from === "admin" ? "상담원" : "AI",
       data.text
     );
   });
