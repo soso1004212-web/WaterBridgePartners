@@ -1280,8 +1280,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <!-- ===================== -->
-<!-- 💬 LIVE CHAT -->
+<!-- 💬 LIVE CHAT CLEAN VERSION -->
 <!-- ===================== -->
+
+<!-- Socket.io 필수 -->
+<script src="/socket.io/socket.io.js"></script>
 
 <div id="chatBtn">💬 실시간상담</div>
 
@@ -1296,6 +1299,74 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
 </div>
 
+<style>
+#chatBtn{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#d4af37;
+  color:#111;
+  padding:14px 18px;
+  border-radius:50px;
+  font-weight:700;
+  cursor:pointer;
+  z-index:99999;
+}
+
+#chatBox{
+  position:fixed;
+  right:20px;
+  bottom:80px;
+  width:320px;
+  height:420px;
+  background:#111a2c;
+  border:1px solid rgba(255,255,255,0.1);
+  display:none;
+  flex-direction:column;
+  z-index:99999;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+#chatHeader{
+  background:#d4af37;
+  color:#111;
+  padding:12px;
+  font-weight:800;
+  text-align:center;
+}
+
+#chatMessages{
+  flex:1;
+  padding:10px;
+  overflow-y:auto;
+  color:#fff;
+  font-size:14px;
+}
+
+#chatInputArea{
+  display:flex;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
+#chatInput{
+  flex:1;
+  padding:12px;
+  border:none;
+  outline:none;
+  background:#0b1220;
+  color:#fff;
+}
+
+#sendChat{
+  background:#d4af37;
+  border:none;
+  padding:0 14px;
+  font-weight:700;
+  cursor:pointer;
+}
+</style>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1305,15 +1376,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
 
-  if (!chatBtn || !chatBox || !chatInput || !sendBtn) return;
-
   // ================= SOCKET =================
-  const socket = io("https://waterbridge-chat-server-production.up.railway.app");
+  const socket = io();
 
   // 세션 고정
   let sessionId = localStorage.getItem("sessionId");
+
   if (!sessionId) {
-    sessionId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 10);
+    sessionId = crypto.randomUUID();
     localStorage.setItem("sessionId", sessionId);
   }
 
@@ -1328,7 +1398,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // ================= TOGGLE =================
+  // ================= OPEN / CLOSE =================
   chatBtn.addEventListener("click", () => {
     const isOpen = chatBox.style.display === "flex";
 
@@ -1340,7 +1410,6 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBox.style.display = "flex";
     chatBox.style.flexDirection = "column";
 
-    // 최초 1회 인사
     if (!chatBox.dataset.opened) {
       chatBox.dataset.opened = "true";
       addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
