@@ -1270,6 +1270,33 @@ fetch("https://waterbridge-chat-server-production.up.railway.app/send", {
 </p>
 
 </div>
+<!-- 실시간 상담 버튼 -->
+<div id="chatBtn">
+💬 실시간 상담
+</div>
+
+<!-- 채팅창 -->
+<div id="chatBox">
+
+  <div id="chatHeader">
+    워터브릿지파트너스 상담
+  </div>
+
+  <div id="chatMessages"></div>
+
+  <div id="chatInputArea">
+    <input
+      type="text"
+      id="chatInput"
+      placeholder="메시지를 입력하세요"
+    >
+
+    <button id="sendChat">
+      전송
+    </button>
+  </div>
+
+</div>
 </footer>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
