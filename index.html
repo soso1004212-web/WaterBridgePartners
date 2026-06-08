@@ -1351,6 +1351,13 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 
+socket.on("chatEnded", () => {
+  addMessage(
+    "시스템",
+    "상담이 종료되었습니다."
+  );
+});
+
 });
 </script>
 <script>
