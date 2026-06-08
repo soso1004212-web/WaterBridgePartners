@@ -1254,7 +1254,31 @@ loading="lazy">
 
 </div>
 </footer>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const counters = document.querySelectorAll(".count");
 
+  counters.forEach(counter => {
+    const target = +counter.getAttribute("data-value");
+    let current = 0;
+
+    const increment = target / 100; // 속도 조절
+
+    const updateCounter = () => {
+      current += increment;
+
+      if (current < target) {
+        counter.innerText = Math.ceil(current);
+        requestAnimationFrame(updateCounter);
+      } else {
+        counter.innerText = target;
+      }
+    };
+
+    updateCounter();
+  });
+});
+</script>
 <!-- ===================== -->
 <!-- 💬 LIVE CHAT -->
 <!-- ===================== -->
