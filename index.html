@@ -13,7 +13,7 @@
 <style>
 
 #chatBtn{
-  position: fixed;
+  position: fixed !important;
   right: 20px;
   bottom: calc(20px + env(safe-area-inset-bottom));
   background: #d4af37;
@@ -22,14 +22,14 @@
   border-radius: 50px;
   font-weight: 700;
   cursor: pointer;
-  z-index: 2147483647;
+  z-index: 2147483647 !important;
 
-  /* ⭐ iPhone 터치 문제 핵심 */
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
   touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+  isolation: isolate;
 }
+
 #topBtn{
   position:fixed;
   right:20px;
@@ -390,6 +390,9 @@ width:100%;
 z-index:999;
 background:rgba(11,18,32,.92);
 backdrop-filter:blur(10px);
+}
+header{
+  z-index: 1;
 }
 
 .nav{
@@ -784,6 +787,10 @@ section{padding:80px 0;}
 }
 html, body {
   touch-action: manipulation;
+}
+body {
+  -webkit-overflow-scrolling: touch;
+  position: relative;
 }
 </style>
 
