@@ -22,7 +22,7 @@
   border-radius:50px;
   font-weight:700;
   cursor:pointer;
-  z-index:99999;
+  z-index:2147483647;
   box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 #topBtn{
@@ -52,6 +52,13 @@
   z-index:99999;
   border-radius:10px;
   overflow:hidden;
+}
+#chatBox {
+  pointer-events: none;
+}
+
+#chatBox.open {
+  pointer-events: auto;
 }
 
 #chatHeader{
@@ -1295,26 +1302,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ================= OPEN / CLOSE =================
   chatBtn.addEventListener("click", () => {
+  const isOpen = chatBox.classList.contains("open");
 
-    const isOpen = chatBox.classList.contains("open");
-
-    if (isOpen) {
-      chatBox.classList.remove("open");
-      setTimeout(() => chatBox.style.display = "none", 200);
-      return;
-    }
-
-    chatBox.style.display = "flex";
-
+  if (isOpen) {
+    chatBox.classList.remove("open");
     setTimeout(() => {
-      chatBox.classList.add("open");
-    }, 10);
+      chatBox.style.display = "none";
+    }, 200);
+    return;
+  }
 
-    if (!chatBox.dataset.opened) {
-      chatBox.dataset.opened = "true";
-      addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
-    }
+  chatBox.style.display = "flex";
+
+  requestAnimationFrame(() => {
+    chatBox.classList.add("open");
   });
+
+  if (!chatBox.dataset.opened) {
+    chatBox.dataset.opened = "true";
+    addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
+  }
+});
 
   // ================= SEND =================
   function sendMessage() {
