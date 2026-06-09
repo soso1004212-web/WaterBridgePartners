@@ -42,10 +42,6 @@
 
   /* 🔥 추가 (안 눌릴 때 대부분 이거 때문) */
   user-select: none;
-}#chatBtn{
-  position: fixed;
-  right: 20px;
-  bottom: calc(20px + env(safe-area-inset-bottom));
 }
 #topBtn{
   position:fixed;
@@ -1393,13 +1389,10 @@ function bindChatButton() {
   const chatBtn = document.getElementById("chatBtn");
   if (!chatBtn) return;
 
-  const handler = (e) => {
+  chatBtn.addEventListener("pointerup", (e) => {
     e.preventDefault();
     toggleChat();
-  };
-
-  chatBtn.addEventListener("click", handler);
-  chatBtn.addEventListener("touchend", handler, { passive: false });
+  });
 }
 
 bindChatButton();
