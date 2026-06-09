@@ -13,26 +13,17 @@
 <style>
 
 #chatBtn{
-  position: fixed !important;
-  right: 20px;
-  bottom: calc(20px + env(safe-area-inset-bottom));
-  z-index: 2147483647 !important;
-
-  background: #d4af37;
-  color: #111;
-  padding: 14px 18px;
-  border-radius: 50px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  /* ⭐ Safari 핵심 */
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  -webkit-appearance: none;
-
-  /* ⭐ 중요: transform 제거 (오히려 Safari에서 문제 유발) */
-  will-change: auto;
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#d4af37;
+  color:#111;
+  padding:14px 18px;
+  border-radius:50px;
+  font-weight:700;
+  cursor:pointer;
+  z-index:99999;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 #topBtn{
   position:fixed;
@@ -49,22 +40,18 @@
   box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 #chatBox{
-  position: fixed;
-  right: 20px;
-  bottom: 80px;
-  width: 320px;
-  height: 420px;
-  background: #111a2c;
-  border: 1px solid rgba(255,255,255,0.1);
-  display: none;
-  flex-direction: column;
-  z-index: 2147483647;
-
-  border-radius: 10px;
-  overflow: hidden;
-
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  position:fixed;
+  right:20px;
+  bottom:80px;
+  width:320px;
+  height:420px;
+  background:#111a2c;
+  border:1px solid rgba(255,255,255,0.1);
+  display:none;
+  flex-direction:column;
+  z-index:99999;
+  border-radius:10px;
+  overflow:hidden;
 }
 
 #chatHeader{
@@ -395,9 +382,6 @@ z-index:999;
 background:rgba(11,18,32,.92);
 backdrop-filter:blur(10px);
 }
-header{
-  z-index: 1;
-}
 
 .nav{
 height:90px;
@@ -714,35 +698,6 @@ background:#060b15;
 padding:80px 0 40px;
 }
 
-.map-box iframe{
-  pointer-events: none !important;
-}
-
-/* ⭐ 지도는 지도만 */
-.map-wrap{
-  position: relative;
-  z-index: 1;
-}
-
-/* ⭐ UI는 완전 분리 레이어 */
-#uiLayer{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  z-index:2147483647;
-  pointer-events:none;
-}
-
-#chatBtn, #topBtn{
-  pointer-events:auto;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color:transparent;
-}
-
-.map-box iframe{
-  pointer-events: none !important;
-}
-
 .footer-top{
 display:grid;
 grid-template-columns:2fr 1fr 1fr;
@@ -813,13 +768,6 @@ section{padding:80px 0;}
 .about-card p{
   word-break: keep-all;
   line-height: 1.7;
-}
-html, body {
-  touch-action: manipulation;
-}
-body {
-  -webkit-overflow-scrolling: touch;
-  position: relative;
 }
 </style>
 
@@ -1166,21 +1114,15 @@ emailInput.addEventListener("input", function () {
       }
     </style>
 
-   <!-- 지도 영역 -->
-<div class="map-wrap">
-  <div class="map-box">
-    <iframe
-      src="https://www.google.com/maps?q=대한민국%20서울특별시%20영등포구%20여의동%2044-32&output=embed"
-      loading="lazy">
-    </iframe>
-  </div>
-</div>
+    <div class="map-box">
+      <iframe
+        src="https://www.google.com/maps?q=대한민국%20서울특별시%20영등포구%20여의동%2044-32&output=embed"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+    </div>
 
-<!-- ⭐ 버튼 전용 레이어 (지도 밖) -->
-<div id="uiLayer">
-  <div id="chatBtn">💬 실시간 상담</div>
-  <div id="topBtn">↑ TOP</div>
-</div>
+  </div>
 </section>
 
 <!-- FOOTER -->
@@ -1239,11 +1181,11 @@ emailInput.addEventListener("input", function () {
 <div id="topBtn">↑ TOP</div>
 
 <!-- 실시간 상담 버튼 -->
-<div id="uiLayer">
-  <div id="chatBtn">💬 실시간 상담</div>
-  <div id="topBtn">↑ TOP</div>
+<div id="chatBtn">
+💬 실시간 상담
 </div>
 
+<!-- 채팅창 -->
 <div id="chatBox">
 
   <div id="chatHeader">
@@ -1297,17 +1239,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
-  const chatBtn = document.getElementById("chatBtn");
-
-  chatBtn.addEventListener("pointerup", () => {
-    const chatBox = document.getElementById("chatBox");
-
-    chatBox.style.display = "flex";
-  });
-
-});
-</script>
 
   const API = "https://waterbridge-chat-server-production.up.railway.app";
   const socket = io(API, {
