@@ -12,109 +12,46 @@
 
 <style>
 
-html, body {
-  height: 100%;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-* {
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
-}
-
-/* =========================
-   HEADER (덮는 문제 방지)
-========================= */
-header{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 999;
-}
-
-/* =========================
-   CHAT BUTTON (최상단 고정)
-========================= */
 #chatBtn{
-  position: fixed;
-  right: 20px;
-  bottom: calc(20px + env(safe-area-inset-bottom));
-
-  z-index: 2147483647 !important;
-
-  background: #d4af37;
-  color: #111;
-  padding: 14px 18px;
-  border-radius: 50px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
-
-  pointer-events: auto;
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#d4af37;
+  color:#111;
+  padding:14px 18px;
+  border-radius:50px;
+  font-weight:700;
+  cursor:pointer;
+  z-index:99999;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
-
-/* =========================
-   TOP BUTTON
-========================= */
 #topBtn{
-  position: fixed;
-  right: 20px;
-  bottom: calc(90px + env(safe-area-inset-bottom));
-
-  z-index: 2147483646;
-
-  background: #d4af37;
-  color: #111;
-  padding: 12px 16px;
-  border-radius: 50px;
-  font-weight: 700;
-
-  display: none;
-
-  cursor: pointer;
-
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
-
-  pointer-events: auto;
+  position:fixed;
+  right:20px;
+  bottom:90px;
+  background:#d4af37;
+  color:#111;
+  padding:12px 16px;
+  border-radius:50px;
+  font-weight:700;
+  cursor:pointer;
+  z-index:99999;
+  display:none;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
-
-/* =========================
-   CHAT BOX (절대 클릭 방해 금지)
-========================= */
 #chatBox{
-  position: fixed;
-  right: 20px;
-  bottom: 80px;
-
-  width: 320px;
-  height: 420px;
-
-  background: #111a2c;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px;
-
-  display: none;
-  flex-direction: column;
-
-  z-index: 2147483645;
-
-  overflow: hidden;
-
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
-
-  pointer-events: auto;
+  position:fixed;
+  right:20px;
+  bottom:80px;
+  width:320px;
+  height:420px;
+  background:#111a2c;
+  border:1px solid rgba(255,255,255,0.1);
+  display:none;
+  flex-direction:column;
+  z-index:99999;
+  border-radius:10px;
+  overflow:hidden;
 }
 
 #chatHeader{
@@ -1440,12 +1377,4 @@ topBtn.addEventListener("click", () => {
     behavior:"smooth"
   });
 });
-</script>
-<script>
-function fixVH(){
-  document.body.style.height = window.innerHeight + "px";
-}
-
-window.addEventListener("resize", fixVH);
-window.addEventListener("load", fixVH);
 </script>
