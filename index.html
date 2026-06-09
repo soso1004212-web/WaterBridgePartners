@@ -42,6 +42,10 @@
 
   /* 🔥 추가 (안 눌릴 때 대부분 이거 때문) */
   user-select: none;
+}#chatBtn{
+  position: fixed;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
 }
 #topBtn{
   position:fixed;
@@ -1394,17 +1398,10 @@ function bindChatButton() {
     toggleChat();
   };
 
-  // PC
   chatBtn.addEventListener("click", handler);
-
-  // 모바일 (iPhone 핵심)
   chatBtn.addEventListener("touchend", handler, { passive: false });
-
-  // 일부 iOS Safari fallback
-  chatBtn.addEventListener("pointerup", handler);
 }
 
-// 반드시 DOM 로드 이후 실행
 bindChatButton();
 
 });
