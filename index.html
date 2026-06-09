@@ -11,8 +11,8 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="워터브릿지파트너스">
 <meta property="og:description" content="M&A · 투자유치 · 기업가치평가 전문 자문사">
-<meta property="og:url" content="http://www.waterbridgepartners.kr/">
-<meta property="og:image" content="http://www.waterbridgepartners.kr/images/logo.png">
+<meta property="og:url" content="https://www.waterbridgepartners.kr/">
+<meta property="og:image" content="https://www.waterbridgepartners.kr/images/logo.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -1315,11 +1315,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // ================= SESSION =================
   let sessionId = localStorage.getItem("sessionId");
 
-  if (!sessionId) {
-    sessionId = crypto.randomUUID();
-    localStorage.setItem("sessionId", sessionId);
-  }
+ if (!sessionId) {
+  sessionId =
+    Date.now().toString() +
+    Math.random().toString(36).substring(2);
 
+  localStorage.setItem("sessionId", sessionId);
+}
   // ================= SOCKET CONNECT =================
   socket.on("connect", () => {
     socket.emit("join", sessionId);
@@ -1354,27 +1356,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ================= OPEN / CLOSE =================
-  chatBtn.addEventListener("click", () => {
+function openChat(e) {
 
-    const isOpen = chatBox.classList.contains("open");
+  if (e) e.preventDefault();
 
-    if (isOpen) {
-      chatBox.classList.remove("open");
-      setTimeout(() => chatBox.style.display = "none", 200);
-      return;
-    }
+  const isOpen = chatBox.classList.contains("open");
 
-    chatBox.style.display = "flex";
+  if (isOpen) {
+    chatBox.classList.remove("open");
+    setTimeout(() => chatBox.style.display = "none", 200);
+    return;
+  }
 
-    setTimeout(() => {
-      chatBox.classList.add("open");
-    }, 10);
+  chatBox.style.display = "flex";
 
-    if (!chatBox.dataset.opened) {
-      chatBox.dataset.opened = "true";
-      addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
-    }
-  });
+  setTimeout(() => {
+    chatBox.classList.add("open");
+  }, 10);
+
+  if (!chatBox.dataset.opened) {
+    chatBox.dataset.opened = "true";
+    addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
+  }
+}
+
+chatBtn.addEventListener("click", openChat);
+chatBtn.addEventListener("touchstart", openChat, { passive:false });
 
   // ================= SEND =================
   function sendMessage() {
