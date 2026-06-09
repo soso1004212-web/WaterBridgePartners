@@ -364,11 +364,6 @@ color:#fff;
 overflow-x:hidden;
 }
 
-html, body {
-  height: 100%;
-  -webkit-overflow-scrolling: touch;
-}
-
 a{
 text-decoration:none;
 color:inherit;
@@ -702,9 +697,6 @@ cursor:pointer;
 overflow:hidden;
 border-radius:10px;
 }
-.map-box iframe {
-  pointer-events: none;
-}
 
 /* FOOTER */
 footer{
@@ -775,24 +767,6 @@ section{padding:80px 0;}
 .contact-wrap {
   align-items: flex-start;
 }
-/* ===== iOS CHAT BUTTON FIX ===== */
-#chatBtn, #topBtn, #chatBox {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  will-change: transform;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-#chatBtn {
-  pointer-events: auto !important;
-  z-index: 2147483647 !important;
-}
-
-#chatBtn * {
-  pointer-events: none;
-}
 
 .contact-form {
   margin-top: 30px;
@@ -801,53 +775,37 @@ section{padding:80px 0;}
   word-break: keep-all;
   line-height: 1.7;
 }
-/* =========================
-   iOS CLICK FIX CORE
-   ========================= */
 
-/* 모든 fixed 버튼 안정화 */
-#chatBtn, #topBtn {
-  position: fixed;
-  z-index: 2147483647;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  will-change: transform;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-user-select: none;
-  user-select: none;
-}
+/* ===================== */
+/* 모바일 채팅 버튼 클릭 막힘 해결 */
+/* ===================== */
 
-/* chat 버튼 */
-#chatBtn {
-  pointer-events: auto;
-}
-
-/* 혹시 위에 겹치는 요소 방지 */
-#chatBtn * {
-  pointer-events: none;
-}
-
-/* TOP 버튼 */
-#topBtn {
-  pointer-events: auto;
-}
-
-/* 채팅창은 열렸을 때만 터치 */
+/* 1) 모든 최상단 클릭 보장 */
+#chatBtn,
+#topBtn,
 #chatBox {
-  pointer-events: none;
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
 
-#chatBox.open {
-  pointer-events: auto;
+/* 2) iOS / 모바일 터치 반응 개선 */
+#chatBtn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-/* iOS iframe 터치 충돌 방지 */
+/* 3) ★ 핵심: 지도 iframe이 터치 막는 문제 완전 차단 */
 .map-box iframe {
-  pointer-events: none;
+  pointer-events: none !important;
 }
+
+/* 4) 혹시 다른 영역 덮는 경우 대비 */
+body, html {
+  touch-action: manipulation;
+}
+
 
 </style>
 
@@ -1331,9 +1289,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
-chatBtn.style.webkitTouchCallout = "none";
-chatBtn.style.userSelect = "none";
-chatBtn.style.touchAction = "manipulation";
+
   // ================= SESSION =================
   let sessionId = localStorage.getItem("sessionId");
 
@@ -1376,30 +1332,27 @@ chatBtn.style.touchAction = "manipulation";
   }
 
   // ================= OPEN / CLOSE =================
-  chatBtn.addEventListener("click", openChat, {passive:true});
-chatBtn.addEventListener("touchend", openChat, {passive:true});
+  chatBtn.addEventListener("click", () => {
 
-function openChat() {
+    const isOpen = chatBox.classList.contains("open");
 
-  const isOpen = chatBox.classList.contains("open");
+    if (isOpen) {
+      chatBox.classList.remove("open");
+      setTimeout(() => chatBox.style.display = "none", 200);
+      return;
+    }
 
-  if (isOpen) {
-    chatBox.classList.remove("open");
-    setTimeout(() => chatBox.style.display = "none", 200);
-    return;
-  }
+    chatBox.style.display = "flex";
 
-  chatBox.style.display = "flex";
+    setTimeout(() => {
+      chatBox.classList.add("open");
+    }, 10);
 
-  setTimeout(() => {
-    chatBox.classList.add("open");
-  }, 10);
-
-  if (!chatBox.dataset.opened) {
-    chatBox.dataset.opened = "true";
-    addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
-  }
-}
+    if (!chatBox.dataset.opened) {
+      chatBox.dataset.opened = "true";
+      addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
+    }
+  });
 
   // ================= SEND =================
   function sendMessage() {
@@ -1446,7 +1399,6 @@ socket.on("chatEnded", () => {
 });
 </script>
 <script>
-document.addEventListener("touchstart", function(){}, {passive:true});
 const topBtn = document.getElementById("topBtn");
 
 window.addEventListener("scroll", () => {
@@ -1463,7 +1415,4 @@ topBtn.addEventListener("click", () => {
     behavior:"smooth"
   });
 });
-</script>
-<script>
-document.addEventListener("touchstart", function(){}, {passive:true});
 </script>
