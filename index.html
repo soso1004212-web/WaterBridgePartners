@@ -12,24 +12,39 @@
 
 <style>
 
-#chatBtn{
-  position: fixed !important;
+#chatLayer{
+  position: fixed;
   right: 20px;
   bottom: calc(20px + env(safe-area-inset-bottom));
+
+  z-index: 2147483647;
+
+  /* ⭐ Safari 핵심 */
+  pointer-events: none;
+}
+
+#chatBtn{
+  pointer-events: auto;
+
   background: #d4af37;
   color: #111;
   padding: 14px 18px;
   border-radius: 50px;
   font-weight: 700;
+
   cursor: pointer;
-  z-index: 2147483647 !important;
 
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
+  /* ⭐ Safari 안정화 핵심 */
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  isolation: isolate;
-}
 
+  /* ⭐ GPU 레이어 분리 (단독 적용) */
+  transform: translate3d(0,0,0);
+  will-change: transform;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
 #topBtn{
   position:fixed;
   right:20px;
@@ -1204,11 +1219,10 @@ emailInput.addEventListener("input", function () {
 <div id="topBtn">↑ TOP</div>
 
 <!-- 실시간 상담 버튼 -->
-<div id="chatBtn">
-💬 실시간 상담
+<div id="chatLayer">
+  <div id="chatBtn">💬 실시간 상담</div>
 </div>
 
-<!-- 채팅창 -->
 <div id="chatBox">
 
   <div id="chatHeader">
