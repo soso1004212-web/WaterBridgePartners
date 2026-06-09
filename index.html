@@ -718,6 +718,37 @@ padding:80px 0 40px;
   pointer-events: none !important;
 }
 
+/* ⭐ 지도는 지도만 */
+.map-wrap{
+  position: relative;
+  z-index: 1;
+}
+
+/* ⭐ UI는 완전 분리 레이어 */
+#uiLayer{
+  position: fixed;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  z-index: 2147483647;
+
+  /* ⭐ Safari 핵심 */
+  pointer-events: none;
+}
+
+/* 버튼만 클릭 가능 */
+#chatBtn, #topBtn{
+  pointer-events: auto;
+
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.map-box iframe{
+  pointer-events: none !important;
+}
+
 .footer-top{
 display:grid;
 grid-template-columns:2fr 1fr 1fr;
@@ -1141,15 +1172,21 @@ emailInput.addEventListener("input", function () {
       }
     </style>
 
-    <div class="map-box">
-      <iframe
-        src="https://www.google.com/maps?q=대한민국%20서울특별시%20영등포구%20여의동%2044-32&output=embed"
-        allowfullscreen
-        loading="lazy">
-      </iframe>
-    </div>
-
+   <!-- 지도 영역 -->
+<div class="map-wrap">
+  <div class="map-box">
+    <iframe
+      src="https://www.google.com/maps?q=대한민국%20서울특별시%20영등포구%20여의동%2044-32&output=embed"
+      loading="lazy">
+    </iframe>
   </div>
+</div>
+
+<!-- ⭐ 버튼 전용 레이어 (지도 밖) -->
+<div id="uiLayer">
+  <div id="chatBtn">💬 실시간 상담</div>
+  <div id="topBtn">↑ TOP</div>
+</div>
 </section>
 
 <!-- FOOTER -->
