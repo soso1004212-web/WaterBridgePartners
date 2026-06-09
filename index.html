@@ -1389,12 +1389,22 @@ function bindChatButton() {
   const chatBtn = document.getElementById("chatBtn");
   if (!chatBtn) return;
 
-  chatBtn.addEventListener("pointerup", (e) => {
+  const handler = (e) => {
     e.preventDefault();
     toggleChat();
-  });
+  };
+
+  // PC
+  chatBtn.addEventListener("click", handler);
+
+  // 모바일 (iPhone 핵심)
+  chatBtn.addEventListener("touchend", handler, { passive: false });
+
+  // 일부 iOS Safari fallback
+  chatBtn.addEventListener("pointerup", handler);
 }
 
+// 반드시 DOM 로드 이후 실행
 bindChatButton();
 
 });
