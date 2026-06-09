@@ -13,17 +13,23 @@
 <style>
 
 #chatBtn{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  background:#d4af37;
-  color:#111;
-  padding:14px 18px;
-  border-radius:50px;
-  font-weight:700;
-  cursor:pointer;
-  z-index:99999;
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+  position: fixed;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  
+  background: #d4af37;
+  color: #111;
+  padding: 14px 18px;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+
+  z-index: 2147483647;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+
+  touch-action: manipulation;
+  -webkit-transform: translateZ(0);
 }
 #topBtn{
   position:fixed;
