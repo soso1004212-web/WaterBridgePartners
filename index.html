@@ -801,7 +801,53 @@ section{padding:80px 0;}
   word-break: keep-all;
   line-height: 1.7;
 }
+/* =========================
+   iOS CLICK FIX CORE
+   ========================= */
 
+/* 모든 fixed 버튼 안정화 */
+#chatBtn, #topBtn {
+  position: fixed;
+  z-index: 2147483647;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* chat 버튼 */
+#chatBtn {
+  pointer-events: auto;
+}
+
+/* 혹시 위에 겹치는 요소 방지 */
+#chatBtn * {
+  pointer-events: none;
+}
+
+/* TOP 버튼 */
+#topBtn {
+  pointer-events: auto;
+}
+
+/* 채팅창은 열렸을 때만 터치 */
+#chatBox {
+  pointer-events: none;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+#chatBox.open {
+  pointer-events: auto;
+}
+
+/* iOS iframe 터치 충돌 방지 */
+.map-box iframe {
+  pointer-events: none;
+}
 
 </style>
 
@@ -1285,7 +1331,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
-
+chatBtn.style.webkitTouchCallout = "none";
+chatBtn.style.userSelect = "none";
+chatBtn.style.touchAction = "manipulation";
   // ================= SESSION =================
   let sessionId = localStorage.getItem("sessionId");
 
@@ -1328,27 +1376,30 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ================= OPEN / CLOSE =================
-  chatBtn.addEventListener("click", () => {
+  chatBtn.addEventListener("click", openChat, {passive:true});
+chatBtn.addEventListener("touchend", openChat, {passive:true});
 
-    const isOpen = chatBox.classList.contains("open");
+function openChat() {
 
-    if (isOpen) {
-      chatBox.classList.remove("open");
-      setTimeout(() => chatBox.style.display = "none", 200);
-      return;
-    }
+  const isOpen = chatBox.classList.contains("open");
 
-    chatBox.style.display = "flex";
+  if (isOpen) {
+    chatBox.classList.remove("open");
+    setTimeout(() => chatBox.style.display = "none", 200);
+    return;
+  }
 
-    setTimeout(() => {
-      chatBox.classList.add("open");
-    }, 10);
+  chatBox.style.display = "flex";
 
-    if (!chatBox.dataset.opened) {
-      chatBox.dataset.opened = "true";
-      addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
-    }
-  });
+  setTimeout(() => {
+    chatBox.classList.add("open");
+  }, 10);
+
+  if (!chatBox.dataset.opened) {
+    chatBox.dataset.opened = "true";
+    addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
+  }
+}
 
   // ================= SEND =================
   function sendMessage() {
@@ -1412,4 +1463,7 @@ topBtn.addEventListener("click", () => {
     behavior:"smooth"
   });
 });
+</script>
+<script>
+document.addEventListener("touchstart", function(){}, {passive:true});
 </script>
