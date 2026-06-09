@@ -8,40 +8,22 @@
 
 <title>워터브릿지파트너스</title>
 
-<!-- OG 태그 추가 (이게 핵심) -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="워터브릿지파트너스">
-<meta property="og:description" content="M&A · 투자유치 · 기업가치평가 전문 자문사">
-<meta property="og:url" content="http://www.waterbridgepartners.kr/">
-<meta property="og:image" content="http://www.waterbridgepartners.kr/images/logo.png">
-
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
 #chatBtn{
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  background: #d4af37;
-  color: #111;
-  padding: 14px 18px;
-  border-radius: 50px;
-  font-weight: 700;
-  cursor: pointer;
-
-  /* 🔥 핵심 수정 */
-  z-index: 2147483647;
-  pointer-events: auto;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* 🔥 추가 (안 눌릴 때 대부분 이거 때문) */
-  user-select: none;
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#d4af37;
+  color:#111;
+  padding:14px 18px;
+  border-radius:50px;
+  font-weight:700;
+  cursor:pointer;
+  z-index:99999;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 #topBtn{
   position:fixed;
@@ -374,7 +356,6 @@ font-family:'Pretendard',sans-serif;
 background:#0b1220;
 color:#fff;
 overflow-x:hidden;
--webkit-overflow-scrolling: touch;
 }
 
 a{
@@ -1220,9 +1201,9 @@ emailInput.addEventListener("input", function () {
       placeholder="메시지를 입력하세요"
     >
 
-    <button id="sendChat" type="button">
-  전송
-</button>
+    <button id="sendChat">
+      전송
+    </button>
   </div>
 
 </div>
@@ -1271,37 +1252,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
 
+  // ================= SESSION =================
   let sessionId = localStorage.getItem("sessionId");
+
   if (!sessionId) {
     sessionId = crypto.randomUUID();
     localStorage.setItem("sessionId", sessionId);
   }
 
-  let isOpen = false;
-  let lock = false;
-
-  // ================= SOCKET =================
+  // ================= SOCKET CONNECT =================
   socket.on("connect", () => {
     socket.emit("join", sessionId);
   });
 
-  socket.on("message", (data) => {
-    if (!data || data.from === "user") return;
-
-    addMessage(
-      data.from === "admin" ? "상담원" : "AI",
-      data.text
-    );
+  socket.on("reconnect", () => {
+    socket.emit("join", sessionId);
   });
 
-  socket.on("chatEnded", () => {
-    addMessage("시스템", "상담이 종료되었습니다.");
-  });
-
-  // ================= MESSAGE =================
+  // ================= UI MESSAGE =================
   function addMessage(sender, text) {
     const div = document.createElement("div");
 
+    div.style.marginBottom = "10px";
     div.innerHTML = `
       <div style="
         display:inline-block;
@@ -1311,7 +1283,6 @@ document.addEventListener("DOMContentLoaded", () => {
         background:#0b1220;
         color:#fff;
         line-height:1.4;
-        margin-bottom:10px;
       ">
         <b style="color:#d4af37">${sender}</b><br>
         ${text}
@@ -1319,40 +1290,36 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     chatMessages.appendChild(div);
-
-    requestAnimationFrame(() => {
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // ================= TOGGLE =================
-  function toggleChat() {
-    isOpen = !isOpen;
+  // ================= OPEN / CLOSE =================
+  chatBtn.addEventListener("click", () => {
+
+    const isOpen = chatBox.classList.contains("open");
 
     if (isOpen) {
-      chatBox.style.display = "flex";
-      chatBox.classList.add("open");
-
-      if (!chatBox.dataset.welcome) {
-        chatBox.dataset.welcome = "true";
-        addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
-      }
-
-    } else {
       chatBox.classList.remove("open");
-      setTimeout(() => {
-        chatBox.style.display = "none";
-      }, 150);
+      setTimeout(() => chatBox.style.display = "none", 200);
+      return;
     }
-  }
+
+    chatBox.style.display = "flex";
+
+    setTimeout(() => {
+      chatBox.classList.add("open");
+    }, 10);
+
+    if (!chatBox.dataset.opened) {
+      chatBox.dataset.opened = "true";
+      addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
+    }
+  });
 
   // ================= SEND =================
   function sendMessage() {
     const msg = chatInput.value.trim();
     if (!msg) return;
-
-    if (lock) return;
-    lock = true;
 
     addMessage("고객", msg);
 
@@ -1363,39 +1330,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     chatInput.value = "";
-    chatInput.blur();
-
-    setTimeout(() => lock = false, 300);
   }
 
-  // ================= EVENTS (🔥 핵심 안정화) =================
+  sendBtn.addEventListener("click", sendMessage);
 
-
-  // 👉 send button
-  sendBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    sendMessage();
-  });
-
-  // 👉 Enter
   chatInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      sendMessage();
-    }
+    if (e.key === "Enter") sendMessage();
   });
 
-function bindChatButton() {
-  const chatBtn = document.getElementById("chatBtn");
-  if (!chatBtn) return;
+  // ================= RECEIVE =================
+  socket.on("message", (data) => {
+    if (!data) return;
 
-  chatBtn.addEventListener("pointerup", (e) => {
-    e.preventDefault();
-    toggleChat();
+    // 내 메시지 중복 방지
+    if (data.from === "user") return;
+
+    addMessage(
+      data.from === "admin" ? "상담원" : "AI",
+      data.text
+    );
   });
-}
 
-bindChatButton();
+socket.on("chatEnded", () => {
+  addMessage(
+    "시스템",
+    "상담이 종료되었습니다."
+  );
+});
 
+});
+</script>
+<script>
+const topBtn = document.getElementById("topBtn");
+
+window.addEventListener("scroll", () => {
+  if(window.scrollY > 300){
+    topBtn.style.display = "block";
+  }else{
+    topBtn.style.display = "none";
+  }
+});
+
+topBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 });
 </script>
