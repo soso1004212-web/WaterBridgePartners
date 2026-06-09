@@ -29,19 +29,19 @@
   border-radius: 50px;
   font-weight: 700;
   cursor: pointer;
+
+  /* 🔥 핵심 수정 */
   z-index: 2147483647;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+  /* 🔥 추가 (안 눌릴 때 대부분 이거 때문) */
   user-select: none;
-
-  /* 🔥 iOS 핵심 */
-  pointer-events: auto;
-  transform: translateZ(0);
 }
 #topBtn{
   position:fixed;
@@ -1385,22 +1385,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-function enableChatButton(chatBtn, toggleChat) {
+function bindChatButton() {
+  const chatBtn = document.getElementById("chatBtn");
   if (!chatBtn) return;
 
-  // iOS 최강 호환 방식
-  const handler = (e) => {
+  chatBtn.addEventListener("pointerup", (e) => {
     e.preventDefault();
     toggleChat();
-  };
-
-  chatBtn.addEventListener("click", handler, { passive: false });
-  chatBtn.addEventListener("touchend", handler, { passive: false });
+  });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const chatBtn = document.getElementById("chatBtn");
+bindChatButton();
 
-  enableChatButton(chatBtn, toggleChat);
 });
 </script>
