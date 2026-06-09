@@ -806,7 +806,29 @@ body, html {
   touch-action: manipulation;
 }
 
+// =====================
+// iOS / Telegram iPhone click fix
+// =====================
+document.addEventListener("DOMContentLoaded", () => {
+  const chatBtn = document.getElementById("chatBtn");
 
+  if (!chatBtn) return;
+
+  function openChat() {
+    chatBtn.click();
+  }
+
+  // iOS / Telegram 대응 핵심
+  chatBtn.addEventListener("touchstart", function (e) {
+    e.preventDefault();
+    chatBtn.click();
+  }, { passive: false });
+
+  chatBtn.addEventListener("touchend", function () {
+    chatBtn.click();
+  });
+
+});
 </style>
 
 </head>
