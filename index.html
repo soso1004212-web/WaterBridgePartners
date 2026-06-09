@@ -8,7 +8,6 @@
 
 <title>워터브릿지파트너스</title>
 
-
 <meta property="og:type" content="website">
 <meta property="og:title" content="워터브릿지파트너스">
 <meta property="og:description" content="M&A · 투자유치 · 기업가치평가 전문 자문사">
@@ -769,57 +768,6 @@ section{padding:80px 0;}
   align-items: flex-start;
 }
 
-#wb-float-wrap{
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 999999999;
-}
-
-#wbChatBtn,
-#wbTopBtn{
-  display: block;
-  width: 120px;
-  margin-bottom: 10px;
-  padding: 14px 16px;
-  border-radius: 999px;
-  border: none;
-  font-weight: 700;
-  cursor: pointer;
-
-  background: #d4af37;
-  color: #111;
-
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-
-  transform: none !important;
-}
-
-#wbTopBtn{
-  display:none;
-}
-
-#wbChatBox{
-  position: fixed;
-  right: 20px;
-  bottom: 90px;
-
-  width: 320px;
-  height: 420px;
-
-  display: none;
-  flex-direction: column;
-
-  background:#111a2c;
-  border-radius: 12px;
-  overflow:hidden;
-
-  z-index: 999999999;
-
-  transform: none !important;
-}
-
 .contact-form {
   margin-top: 30px;
 }
@@ -1236,27 +1184,32 @@ emailInput.addEventListener("input", function () {
 </div>
 </footer>
 <!-- TOP 버튼 -->
-<!-- FLOATING CHAT SYSTEM -->
-<div id="wb-float-wrap">
+<div id="topBtn">↑ TOP</div>
 
-  <button id="wbTopBtn">↑ TOP</button>
+<!-- 실시간 상담 버튼 -->
+<div id="chatBtn">
+💬 실시간 상담
+</div>
 
-  <button id="wbChatBtn">💬 상담</button>
+<!-- 채팅창 -->
+<div id="chatBox">
 
-  <div id="wbChatBox">
+  <div id="chatHeader">
+    워터브릿지파트너스 상담
+  </div>
 
-    <div id="wbChatHeader">
-      상담 채팅
-      <span id="wbChatClose">✕</span>
-    </div>
+  <div id="chatMessages"></div>
 
-    <div id="wbChatMessages"></div>
+  <div id="chatInputArea">
+    <input
+      type="text"
+      id="chatInput"
+      placeholder="메시지를 입력하세요"
+    >
 
-    <div id="wbChatInputArea">
-      <input id="wbChatInput" type="text" placeholder="메시지 입력">
-      <button id="wbChatSend">전송</button>
-    </div>
-
+    <button id="sendChat">
+      전송
+    </button>
   </div>
 
 </div>
@@ -1288,9 +1241,6 @@ document.addEventListener("DOMContentLoaded", () => {
 <!-- ===================== -->
 <!-- 💬 LIVE CHAT CLEAN VERSION -->
 <!-- ===================== -->
-<!-- ===================== -->
-<!-- 💬 LIVE CHAT FIXED (iOS/ANDROID SAFE) -->
-<!-- ===================== -->
 <script src="https://waterbridge-chat-server-production.up.railway.app/socket.io/socket.io.js"></script>
 
 <script>
@@ -1302,18 +1252,13 @@ document.addEventListener("DOMContentLoaded", () => {
     reconnection: true
   });
 
-  // ===== FLOATING UI =====
-  const chatBtn = document.getElementById("wbChatBtn");
-  const chatBox = document.getElementById("wbChatBox");
-  const closeBtn = document.getElementById("wbChatClose");
+  const chatBtn = document.getElementById("chatBtn");
+  const chatBox = document.getElementById("chatBox");
+  const chatInput = document.getElementById("chatInput");
+  const sendBtn = document.getElementById("sendChat");
+  const chatMessages = document.getElementById("chatMessages");
 
-  const input = document.getElementById("wbChatInput");
-  const sendBtn = document.getElementById("wbChatSend");
-  const messages = document.getElementById("wbChatMessages");
-
-  const topBtn = document.getElementById("wbTopBtn");
-
-  // ===== SESSION =====
+  // ================= SESSION =================
   let sessionId = localStorage.getItem("sessionId");
 
   if (!sessionId) {
@@ -1321,11 +1266,16 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("sessionId", sessionId);
   }
 
+  // ================= SOCKET CONNECT =================
   socket.on("connect", () => {
     socket.emit("join", sessionId);
   });
 
-  // ===== MESSAGE UI =====
+  socket.on("reconnect", () => {
+    socket.emit("join", sessionId);
+  });
+
+  // ================= UI MESSAGE =================
   function addMessage(sender, text) {
     const div = document.createElement("div");
 
@@ -1339,27 +1289,32 @@ document.addEventListener("DOMContentLoaded", () => {
         background:#0b1220;
         color:#fff;
         line-height:1.4;
-        word-break:break-word;
       ">
         <b style="color:#d4af37">${sender}</b><br>
         ${text}
       </div>
     `;
 
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // ===== OPEN / CLOSE (iOS SAFE TOUCH) =====
+  // ================= OPEN / CLOSE =================
   chatBtn.addEventListener("click", () => {
-    const isOpen = chatBox.style.display === "flex";
+
+    const isOpen = chatBox.classList.contains("open");
 
     if (isOpen) {
-      chatBox.style.display = "none";
+      chatBox.classList.remove("open");
+      setTimeout(() => chatBox.style.display = "none", 200);
       return;
     }
 
     chatBox.style.display = "flex";
+
+    setTimeout(() => {
+      chatBox.classList.add("open");
+    }, 10);
 
     if (!chatBox.dataset.opened) {
       chatBox.dataset.opened = "true";
@@ -1367,13 +1322,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  closeBtn.addEventListener("click", () => {
-    chatBox.style.display = "none";
-  });
-
-  // ===== SEND =====
+  // ================= SEND =================
   function sendMessage() {
-    const msg = input.value.trim();
+    const msg = chatInput.value.trim();
     if (!msg) return;
 
     addMessage("고객", msg);
@@ -1384,18 +1335,20 @@ document.addEventListener("DOMContentLoaded", () => {
       from: "user"
     });
 
-    input.value = "";
+    chatInput.value = "";
   }
 
   sendBtn.addEventListener("click", sendMessage);
 
-  input.addEventListener("keydown", (e) => {
+  chatInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") sendMessage();
   });
 
-  // ===== RECEIVE =====
+  // ================= RECEIVE =================
   socket.on("message", (data) => {
     if (!data) return;
+
+    // 내 메시지 중복 방지
     if (data.from === "user") return;
 
     addMessage(
@@ -1404,82 +1357,17 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  socket.on("chatEnded", () => {
-    addMessage("시스템", "상담이 종료되었습니다.");
-  });
-
-  // ===== TOP BUTTON (wbTopBtn ONLY) =====
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) {
-      topBtn.style.display = "block";
-    } else {
-      topBtn.style.display = "none";
-    }
-  });
-
-  topBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+socket.on("chatEnded", () => {
+  addMessage(
+    "시스템",
+    "상담이 종료되었습니다."
+  );
+});
 
 });
 </script>
 <script>
 const topBtn = document.getElementById("topBtn");
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const chatBtn = document.getElementById("wbChatBtn");
-  const topBtn = document.getElementById("wbTopBtn");
-  const chatBox = document.getElementById("wbChatBox");
-  const closeBtn = document.getElementById("wbChatClose");
-
-  const input = document.getElementById("wbChatInput");
-  const send = document.getElementById("wbChatSend");
-  const messages = document.getElementById("wbChatMessages");
-
-  // 열기/닫기
-  chatBtn.addEventListener("click", () => {
-    chatBox.style.display =
-      chatBox.style.display === "flex" ? "none" : "flex";
-  });
-
-  closeBtn.addEventListener("click", () => {
-    chatBox.style.display = "none";
-  });
-
-  // 메시지
-  send.addEventListener("click", () => {
-    const msg = input.value.trim();
-    if(!msg) return;
-
-    const div = document.createElement("div");
-    div.style.marginBottom = "10px";
-    div.innerHTML = `<b style="color:#d4af37">고객</b><br>${msg}`;
-    messages.appendChild(div);
-
-    input.value = "";
-  });
-
-  input.addEventListener("keydown", (e) => {
-    if(e.key === "Enter") send.click();
-  });
-
-  // TOP 버튼
-  window.addEventListener("scroll", () => {
-    if(window.scrollY > 300){
-      topBtn.style.display = "block";
-    } else {
-      topBtn.style.display = "none";
-    }
-  });
-
-  topBtn.addEventListener("click", () => {
-    window.scrollTo({ top:0, behavior:"smooth" });
-  });
-
-});
-</script>
 
 window.addEventListener("scroll", () => {
   if(window.scrollY > 300){
