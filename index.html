@@ -13,17 +13,22 @@
 <style>
 
 #chatBtn{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  background:#d4af37;
-  color:#111;
-  padding:14px 18px;
-  border-radius:50px;
-  font-weight:700;
-  cursor:pointer;
-  z-index:99999;
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+  position: fixed;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  background: #d4af37;
+  color: #111;
+  padding: 14px 18px;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 2147483647;
+
+  /* ⭐ iPhone 터치 문제 핵심 */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 #topBtn{
   position:fixed;
@@ -40,18 +45,22 @@
   box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 #chatBox{
-  position:fixed;
-  right:20px;
-  bottom:80px;
-  width:320px;
-  height:420px;
-  background:#111a2c;
-  border:1px solid rgba(255,255,255,0.1);
-  display:none;
-  flex-direction:column;
-  z-index:99999;
-  border-radius:10px;
-  overflow:hidden;
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+  width: 320px;
+  height: 420px;
+  background: #111a2c;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: none;
+  flex-direction: column;
+  z-index: 2147483647;
+
+  border-radius: 10px;
+  overflow: hidden;
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 #chatHeader{
@@ -698,6 +707,10 @@ background:#060b15;
 padding:80px 0 40px;
 }
 
+.map-box iframe{
+  pointer-events: none !important;
+}
+
 .footer-top{
 display:grid;
 grid-template-columns:2fr 1fr 1fr;
@@ -768,24 +781,9 @@ section{padding:80px 0;}
 .about-card p{
   word-break: keep-all;
   line-height: 1.7;
-}/* ===== MOBILE TOUCH FIX (핵심) ===== */
-#chatBtn, #topBtn, #chatBox {
-  position: fixed !important;
-  z-index: 2147483647 !important;
-  pointer-events: auto !important;
-  transform: none !important;
-  -webkit-transform: none !important;
 }
-
-#chatBtn{
-  bottom: calc(20px + env(safe-area-inset-bottom));
-  -webkit-tap-highlight-color: transparent;
+html, body {
   touch-action: manipulation;
-}
-
-/* 혹시 모를 가림 방지 */
-body, html {
-  -webkit-overflow-scrolling: touch;
 }
 </style>
 
