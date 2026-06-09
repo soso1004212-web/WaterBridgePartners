@@ -29,18 +29,19 @@
   border-radius: 50px;
   font-weight: 700;
   cursor: pointer;
-  z-index: 2147483647; /* 무조건 최상단 */
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  user-select: none;
-
-  /* 🔥 iOS 클릭 핵심 */
+  /* 🔥 핵심 수정 */
+  z-index: 2147483647;
   pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  /* 🔥 추가 (안 눌릴 때 대부분 이거 때문) */
+  user-select: none;
 }
 #topBtn{
   position:fixed;
@@ -1276,21 +1277,16 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("sessionId", sessionId);
   }
 
-  let isChatOpen = false;
-  let isSending = false;
+  let isOpen = false;
+  let lock = false;
 
   // ================= SOCKET =================
   socket.on("connect", () => {
     socket.emit("join", sessionId);
   });
 
-  socket.on("reconnect", () => {
-    socket.emit("join", sessionId);
-  });
-
   socket.on("message", (data) => {
-    if (!data) return;
-    if (data.from === "user") return;
+    if (!data || data.from === "user") return;
 
     addMessage(
       data.from === "admin" ? "상담원" : "AI",
@@ -1302,7 +1298,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addMessage("시스템", "상담이 종료되었습니다.");
   });
 
-  // ================= UI =================
+  // ================= MESSAGE =================
   function addMessage(sender, text) {
     const div = document.createElement("div");
 
@@ -1329,15 +1325,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ================= CHAT TOGGLE =================
+  // ================= TOGGLE =================
   function toggleChat() {
-    isChatOpen = !isChatOpen;
+    isOpen = !isOpen;
 
-    if (isChatOpen) {
+    if (isOpen) {
       chatBox.style.display = "flex";
-      requestAnimationFrame(() => {
-        chatBox.classList.add("open");
-      });
+      chatBox.classList.add("open");
 
       if (!chatBox.dataset.welcome) {
         chatBox.dataset.welcome = "true";
@@ -1348,7 +1342,7 @@ document.addEventListener("DOMContentLoaded", () => {
       chatBox.classList.remove("open");
       setTimeout(() => {
         chatBox.style.display = "none";
-      }, 200);
+      }, 150);
     }
   }
 
@@ -1357,8 +1351,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const msg = chatInput.value.trim();
     if (!msg) return;
 
-    if (isSending) return;
-    isSending = true;
+    if (lock) return;
+    lock = true;
 
     addMessage("고객", msg);
 
@@ -1371,31 +1365,37 @@ document.addEventListener("DOMContentLoaded", () => {
     chatInput.value = "";
     chatInput.blur();
 
-    setTimeout(() => {
-      isSending = false;
-    }, 300);
+    setTimeout(() => lock = false, 300);
   }
 
-  // ================= EVENTS (핵심 안정화) =================
+  // ================= EVENTS (🔥 핵심 안정화) =================
 
-  // 🔥 버튼 (iOS/Android/PC 통합)
-chatBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  toggleChat();
-});
 
-sendBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  sendMessage();
-});
+  // 👉 send button
+  sendBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    sendMessage();
+  });
 
-  // Enter 키
+  // 👉 Enter
   chatInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       sendMessage();
     }
   });
+
+function bindChatButton() {
+  const chatBtn = document.getElementById("chatBtn");
+  if (!chatBtn) return;
+
+  chatBtn.addEventListener("pointerup", (e) => {
+    e.preventDefault();
+    toggleChat();
+  });
+}
+
+bindChatButton();
 
 });
 </script>
