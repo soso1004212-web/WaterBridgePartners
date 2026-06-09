@@ -20,27 +20,27 @@
 <style>
 
 #chatBtn{
-  z-index:2147483647 !important;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: #d4af37;
+  color: #111;
+  padding: 14px 18px;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 2147483647; /* 무조건 최상단 */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 
-#chatBtn{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  background:#d4af37;
-  color:#111;
-  padding:14px 18px;
-  border-radius:50px;
-  font-weight:700;
-  cursor:pointer;
-  z-index:99999;
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  user-select: none;
+
+  /* 🔥 iOS 클릭 핵심 */
   pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #topBtn{
   position:fixed;
@@ -373,6 +373,7 @@ font-family:'Pretendard',sans-serif;
 background:#0b1220;
 color:#fff;
 overflow-x:hidden;
+-webkit-overflow-scrolling: touch;
 }
 
 a{
@@ -1268,6 +1269,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
+
+chatBtn.addEventListener("touchstart", function(e) {
+  e.preventDefault();
+  toggleChat();
+}, { passive: false });
+
+// PC 클릭
+chatBtn.addEventListener("click", toggleChat);
 
   // ================= SESSION =================
   let sessionId = localStorage.getItem("sessionId");
