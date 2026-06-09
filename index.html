@@ -31,6 +31,9 @@
   cursor:pointer;
   z-index:99999;
   box-shadow:0 10px 25px rgba(0,0,0,0.4);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
 }
 #topBtn{
   position:fixed;
@@ -1258,6 +1261,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatInput = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
+
+chatBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  chatBtn.click();
+});
 
   // ================= SESSION =================
   let sessionId = localStorage.getItem("sessionId");
