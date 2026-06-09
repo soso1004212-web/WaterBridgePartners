@@ -1379,15 +1379,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // ================= EVENTS (핵심 안정화) =================
 
   // 🔥 버튼 (iOS/Android/PC 통합)
-  chatBtn.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    toggleChat();
-  });
+chatBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  toggleChat();
+});
 
-  sendBtn.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    sendMessage();
-  });
+sendBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  sendMessage();
+});
 
   // Enter 키
   chatInput.addEventListener("keydown", (e) => {
