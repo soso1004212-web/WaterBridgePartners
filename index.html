@@ -364,6 +364,11 @@ color:#fff;
 overflow-x:hidden;
 }
 
+html, body {
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
 a{
 text-decoration:none;
 color:inherit;
@@ -697,6 +702,9 @@ cursor:pointer;
 overflow:hidden;
 border-radius:10px;
 }
+.map-box iframe {
+  pointer-events: none;
+}
 
 /* FOOTER */
 footer{
@@ -767,6 +775,24 @@ section{padding:80px 0;}
 .contact-wrap {
   align-items: flex-start;
 }
+/* ===== iOS CHAT BUTTON FIX ===== */
+#chatBtn, #topBtn, #chatBox {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+#chatBtn {
+  pointer-events: auto !important;
+  z-index: 2147483647 !important;
+}
+
+#chatBtn * {
+  pointer-events: none;
+}
 
 .contact-form {
   margin-top: 30px;
@@ -775,6 +801,8 @@ section{padding:80px 0;}
   word-break: keep-all;
   line-height: 1.7;
 }
+
+
 </style>
 
 </head>
@@ -1367,6 +1395,7 @@ socket.on("chatEnded", () => {
 });
 </script>
 <script>
+document.addEventListener("touchstart", function(){}, {passive:true});
 const topBtn = document.getElementById("topBtn");
 
 window.addEventListener("scroll", () => {
