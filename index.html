@@ -773,14 +773,14 @@ section{padding:80px 0;}
   position: fixed !important;
   z-index: 2147483647 !important;
   pointer-events: auto !important;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  touch-action: manipulation;
+  transform: none !important;
+  -webkit-transform: none !important;
 }
 
-/* iOS 터치 씹힘 방지 */
-#chatBtn {
+#chatBtn{
+  bottom: calc(20px + env(safe-area-inset-bottom));
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* 혹시 모를 가림 방지 */
