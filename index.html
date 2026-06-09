@@ -1119,6 +1119,102 @@ emailInput.addEventListener("input", function () {
         height: 100%;
         border: 0;
       }
+
+/* ===================== */
+/* CHAT FIX CORE (iOS SAFE)
+/* ===================== */
+
+#chatBtnWrapper {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2147483647;
+}
+
+#chatBtn {
+  background: #d4af37;
+  color: #111;
+  padding: 14px 18px;
+  border-radius: 50px;
+  font-weight: 700;
+
+  cursor: pointer;
+  user-select: none;
+
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* overlay (터치 충돌 방지 핵심) */
+#chatOverlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  display: none;
+  z-index: 2147483646;
+}
+
+/* chat box */
+#chatBox {
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+
+  width: 320px;
+  height: 420px;
+
+  background: #111a2c;
+  border-radius: 10px;
+
+  display: none;
+  flex-direction: column;
+
+  z-index: 2147483647;
+
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+#chatHeader {
+  background: #d4af37;
+  color: #111;
+  padding: 12px;
+  font-weight: 800;
+}
+
+#chatMessages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  color: #fff;
+}
+
+#chatInputArea {
+  display: flex;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+#chatInput {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  outline: none;
+  background: #0b1220;
+  color: #fff;
+}
+
+#sendChat {
+  background: #d4af37;
+  border: none;
+  padding: 0 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
     </style>
 
     <div class="map-box">
@@ -1188,31 +1284,23 @@ emailInput.addEventListener("input", function () {
 <div id="topBtn">↑ TOP</div>
 
 <!-- 실시간 상담 버튼 -->
-<div id="chatBtn">
-💬 실시간 상담
+<!-- FIX CHAT BUTTON -->
+<div id="chatBtnWrapper">
+  <div id="chatBtn">💬 실시간 상담</div>
 </div>
 
-<!-- 채팅창 -->
-<div id="chatBox">
+<!-- CHAT UI -->
+<div id="chatOverlay"></div>
 
-  <div id="chatHeader">
-    워터브릿지파트너스 상담
-  </div>
+<div id="chatBox">
+  <div id="chatHeader">워터브릿지파트너스 상담</div>
 
   <div id="chatMessages"></div>
 
   <div id="chatInputArea">
-    <input
-      type="text"
-      id="chatInput"
-      placeholder="메시지를 입력하세요"
-    >
-
-    <button id="sendChat">
-      전송
-    </button>
+    <input type="text" id="chatInput" placeholder="메시지 입력">
+    <button id="sendChat">전송</button>
   </div>
-
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -1301,16 +1389,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ================= OPEN / CLOSE =================
-  chatBtn.addEventListener("click", () => {
-  const isOpen = chatBox.classList.contains("open");
+ let isOpen = false;
 
-  if (isOpen) {
-    chatBox.classList.remove("open");
-    setTimeout(() => {
-      chatBox.style.display = "none";
-    }, 200);
-    return;
-  }
+function openChat() {
+  isOpen = true;
 
   chatBox.style.display = "flex";
 
@@ -1322,7 +1404,32 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBox.dataset.opened = "true";
     addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
   }
-});
+}
+
+function closeChat() {
+  isOpen = false;
+
+  chatBox.classList.remove("open");
+
+  setTimeout(() => {
+    chatBox.style.display = "none";
+  }, 150);
+}
+
+// 🔥 iOS 핵심 안정 처리
+function toggleChat(e) {
+  if (e) e.preventDefault();
+
+  if (isOpen) {
+    closeChat();
+  } else {
+    openChat();
+  }
+}
+
+// click + touch 둘 다
+chatBtn.addEventListener("click", toggleChat);
+chatBtn.addEventListener("touchstart", toggleChat);
 
   // ================= SEND =================
   function sendMessage() {
