@@ -1219,9 +1219,9 @@ emailInput.addEventListener("input", function () {
       placeholder="메시지를 입력하세요"
     >
 
-    <button id="sendChat">
-      전송
-    </button>
+    <button id="sendChat" type="button">
+  전송
+</button>
   </div>
 
 </div>
@@ -1347,26 +1347,40 @@ chatBtn.addEventListener("touchend", function(e) {
   toggleChat();
 });
   // ================= SEND =================
-  function sendMessage() {
-    const msg = chatInput.value.trim();
-    if (!msg) return;
+ function sendMessage() {
+  const msg = chatInput.value.trim();
+  if (!msg) return;
 
-    addMessage("고객", msg);
+  addMessage("고객", msg);
 
-    socket.emit("message", {
-      sessionId,
-      text: msg,
-      from: "user"
-    });
-
-    chatInput.value = "";
-  }
-
-  sendBtn.addEventListener("click", sendMessage);
-
-  chatInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") sendMessage();
+  socket.emit("message", {
+    sessionId,
+    text: msg,
+    from: "user"
   });
+
+  chatInput.value = "";
+
+  // iPhone 키보드 안정화 (중요)
+  chatInput.blur();
+}
+
+// PC 클릭
+sendBtn.addEventListener("click", sendMessage);
+
+// iPhone 터치 대응
+sendBtn.addEventListener("touchstart", function(e) {
+  e.preventDefault();
+  sendMessage();
+}, { passive: false });
+
+// Enter 키
+chatInput.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
+  }
+});
 
   // ================= RECEIVE =================
   socket.on("message", (data) => {
