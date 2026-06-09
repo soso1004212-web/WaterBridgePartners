@@ -12,19 +12,11 @@
 
 <style>
 
-#chatLayer{
-  position: fixed;
+#chatBtn{
+  position: fixed !important;
   right: 20px;
   bottom: calc(20px + env(safe-area-inset-bottom));
-
-  z-index: 2147483647;
-
-  /* ⭐ Safari 핵심 */
-  pointer-events: none;
-}
-
-#chatBtn{
-  pointer-events: auto;
+  z-index: 2147483647 !important;
 
   background: #d4af37;
   color: #111;
@@ -34,16 +26,13 @@
 
   cursor: pointer;
 
-  /* ⭐ Safari 안정화 핵심 */
-  -webkit-appearance: none;
+  /* ⭐ Safari 핵심 */
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  -webkit-appearance: none;
 
-  /* ⭐ GPU 레이어 분리 (단독 적용) */
-  transform: translate3d(0,0,0);
-  will-change: transform;
-
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  /* ⭐ 중요: transform 제거 (오히려 Safari에서 문제 유발) */
+  will-change: auto;
 }
 #topBtn{
   position:fixed;
