@@ -20,6 +20,13 @@
 <style>
 
 #chatBtn{
+  z-index:2147483647 !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+#chatBtn{
   position:fixed;
   right:20px;
   bottom:20px;
@@ -1262,11 +1269,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendBtn = document.getElementById("sendChat");
   const chatMessages = document.getElementById("chatMessages");
 
-chatBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  chatBtn.click();
-});
-
   // ================= SESSION =================
   let sessionId = localStorage.getItem("sessionId");
 
@@ -1308,29 +1310,33 @@ chatBtn.addEventListener("touchstart", (e) => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // ================= OPEN / CLOSE =================
-  chatBtn.addEventListener("click", () => {
+function toggleChat() {
+  const isOpen = chatBox.classList.contains("open");
 
-    const isOpen = chatBox.classList.contains("open");
+  if (isOpen) {
+    chatBox.classList.remove("open");
+    setTimeout(() => chatBox.style.display = "none", 200);
+    return;
+  }
 
-    if (isOpen) {
-      chatBox.classList.remove("open");
-      setTimeout(() => chatBox.style.display = "none", 200);
-      return;
-    }
+  chatBox.style.display = "flex";
 
-    chatBox.style.display = "flex";
+  setTimeout(() => {
+    chatBox.classList.add("open");
+  }, 10);
 
-    setTimeout(() => {
-      chatBox.classList.add("open");
-    }, 10);
+  if (!chatBox.dataset.opened) {
+    chatBox.dataset.opened = "true";
+    addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
+  }
+}
 
-    if (!chatBox.dataset.opened) {
-      chatBox.dataset.opened = "true";
-      addMessage("AI", "안녕하세요 😊 워터브릿지파트너스입니다.");
-    }
-  });
-
+// ✅ PC + 모바일 통합
+chatBtn.addEventListener("click", toggleChat);
+chatBtn.addEventListener("touchend", function(e) {
+  e.preventDefault();
+  toggleChat();
+});
   // ================= SEND =================
   function sendMessage() {
     const msg = chatInput.value.trim();
